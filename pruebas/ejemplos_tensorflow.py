@@ -1,0 +1,1 @@
+# !tensorflowjs_converter --input_format=tfjs_layers_model --output_format=keras /content/drive/MyDrive/modelo_moises/model.json modelo_moises/modelo_saved_model
