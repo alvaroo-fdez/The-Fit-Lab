@@ -6,10 +6,10 @@ import numpy as np
 np.set_printoptions(suppress=True)
 
 # Load the model
-model = load_model(r"C:\Users\alvarof.DESKTOP-R97TFN9.000\Desktop\The Fit Lab\The-Fit-Lab\modelo_imagenes\keras_model.h5", compile=False)
+model = load_model(r"modelo_imagenes\keras_model.h5", compile=False)
 
 # Load the labels
-class_names = open(r"C:\Users\alvarof.DESKTOP-R97TFN9.000\Desktop\The Fit Lab\The-Fit-Lab\modelo_imagenes\labels.txt", "r").readlines()
+class_names = open(r"modelo_imagenes\labels.txt", "r").readlines()
 
 # CAMERA can be 0 or 1 based on default camera of your computer
 camera = cv2.VideoCapture(0)
