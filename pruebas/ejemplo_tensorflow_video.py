@@ -10,7 +10,7 @@ def preprocesar_imagen(imagen):
     return imagen_aplanada[:14739].reshape((1, -1))
 
 # Cargar el modelo previamente exportado
-model_path = "modelo_alvaro-2.2_convertido/modelo_saved_model"
+model_path = "modelos/modelo_alvaro-2.2_convertido/modelo_saved_model"
 model = tf.saved_model.load(model_path)
 
 # Verificar las firmas disponibles

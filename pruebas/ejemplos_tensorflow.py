@@ -6,7 +6,7 @@ import numpy as np
 import tensorflow as tf
 
 # Cargar el modelo TensorFlow
-modelo = tf.keras.models.load_model('modelo_moises/modelo_saved_model')
+modelo = tf.keras.models.load_model('modelos/modelo_moises/modelo_saved_model')
 
 # Función para preprocesar la imagen
 def preprocesar_imagen(imagen):
