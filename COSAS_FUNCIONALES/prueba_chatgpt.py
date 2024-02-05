@@ -1,5 +1,10 @@
 from openai import OpenAI
-API_KEY = "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"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 client = OpenAI(api_key=API_KEY)
 famoso = "Donald Trump"
 
