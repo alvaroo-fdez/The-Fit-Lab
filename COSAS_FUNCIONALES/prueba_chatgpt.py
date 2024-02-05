@@ -1,5 +1,5 @@
 from openai import OpenAI
-API_KEY = "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"
+API_KEY = ""
 client = OpenAI(api_key=API_KEY)
 famoso = "Donald Trump"
 
