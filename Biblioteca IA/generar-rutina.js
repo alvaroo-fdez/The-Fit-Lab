@@ -1,4 +1,4 @@
-let apiKey = "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"
+let apiKey = ""
 
 function generarRutina(event) {
     event.preventDefault();
