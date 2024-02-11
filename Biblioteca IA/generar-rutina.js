@@ -1,0 +1,112 @@
+let apiKey = "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"
+
+function generarRutina(event) {
+    event.preventDefault();
+    // Deshabilita el botón y muestra un indicador de carga
+    var btnGenerarRutina = document.getElementById('btnGenerarRutina');
+    btnGenerarRutina.disabled = true;
+    btnGenerarRutina.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+    // Recoge los valores de los campos del formulario
+    var nivel = document.getElementById("nivel").value;
+    var altura = document.getElementById("altura").value;
+    var peso = document.getElementById("peso").value;
+    var peso_deseado = document.getElementById("peso_deseado").value;
+    var dias_semana = document.getElementById("dias_semana").value;
+    var entorno = document.getElementById("entorno").value;
+    var objetivo = document.getElementById("objetivo").value;
+
+    formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> - Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
+
+    var apiUrl = 'https://api.openai.com/v1/chat/completions';
+    var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+    };
+
+    var data = {
+        model: 'gpt-3.5-turbo',
+        messages: [
+            { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una rutina adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
+            { role: 'user', content: 'Genera una rutina de entrenamiento para un usuario con nivel: ' + nivel + ', altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ' kg, entrenando ' + dias_semana + ' días a la semana, en entorno de ' + entorno + ' y con objetivo ' + objetivo + '.' },
+        ]
+    };
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(result => {
+            var respuestaGenerada = result.choices[0].message.content;
+            // Añade la respuesta del asistente al contenedor de chat
+            console.log(respuestaGenerada);
+
+            // Formatea la rutina para incluir saltos de línea y títulos
+            respuestaGenerada = respuestaGenerada.replace(/ - (?![\n\r])/g, '<br> - '); // Agrega saltos de línea antes de cada "-"
+
+            // Agrega títulos para los días
+            respuestaGenerada = respuestaGenerada.replace(/Día (\d+):/g, '<br><strong>Día $1:</strong>');
+
+            // Actualiza el contenido del modal
+            var rutinaModalBody = document.getElementById('rutinaModalBody');
+            rutinaModalBody.innerHTML = respuestaGenerada;
+
+            // Muestra el modal
+            $('#rutinaModal').modal('show');
+
+            // Habilita nuevamente el botón después de recibir la respuesta
+            btnGenerarRutina.disabled = false;
+            btnGenerarRutina.innerHTML = 'Generar Rutina';
+        })
+        .catch(error => console.error('Error:', error));
+
+
+}
+
+function guardarRutina() {
+    var nivel = document.getElementById("nivel").value;
+    var altura = document.getElementById("altura").value;
+    var peso = document.getElementById("peso").value;
+    var peso_deseado = document.getElementById("peso_deseado").value;
+    var dias_semana = document.getElementById("dias_semana").value;
+    var entorno = document.getElementById("entorno").value;
+    var objetivo = document.getElementById("objetivo").value;
+    
+    // Obtén la rutina del modal
+    var rutina = document.getElementById('rutinaModalBody').textContent;
+    var tituloRutina = document.getElementById('tituloRutina').value;
+
+    // Construye un objeto con los datos a enviar
+    var data = {
+        nivel: nivel,
+        altura: altura,
+        peso: peso,
+        peso_deseado: peso_deseado,
+        dias_semana: dias_semana,
+        entorno: entorno,
+        objetivo: objetivo,
+        titulo: tituloRutina,
+        rutina: rutina
+    };
+
+    // Envía la rutina y los datos al servidor PHP para su inserción
+    fetch('../back/guardar_rutina.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Manejar la respuesta del servidor si es necesario
+            console.log('Rutina guardada:', data);
+            // Puedes mostrar un mensaje de éxito al usuario o realizar otras acciones necesarias
+            alert('Rutina guardada con éxito. Título: ' + data.titulo);
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Cierra el modal después de guardar
+    $('#rutinaModal').modal('hide');
+}
