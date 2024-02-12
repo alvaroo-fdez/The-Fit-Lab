@@ -25,5 +25,6 @@
     </div>
     </div>
     </div>
+    <script src="../js/obtener_api.js"></script>
     <script src="../Biblioteca IA/chatbot.js"></script>
 <?php require_once('footer.php') ?>

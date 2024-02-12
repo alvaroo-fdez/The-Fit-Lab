@@ -19,7 +19,7 @@ function generarRutina(event) {
         var entorno = document.getElementById("entorno").value;
         var objetivo = document.getElementById("objetivo").value;
 
-        formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> - Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
+        formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
 
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
