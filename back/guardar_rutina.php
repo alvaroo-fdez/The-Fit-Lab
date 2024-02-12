@@ -18,8 +18,8 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Preparar la consulta SQL para la inserción de la rutina
-    $stmt = $conn->prepare("INSERT INTO rutinas (usuario_id, titulo, nivel, altura, peso, peso_deseado, dias_semana, entorno_entrenamiento, objetivo) 
-                            VALUES (:usuario_id, :titulo, :nivel, :altura, :peso, :peso_deseado, :dias_semana, :entorno_entrenamiento, :objetivo)");
+    $stmt = $conn->prepare("INSERT INTO rutinas (usuario_id, titulo, nivel, altura, peso, peso_deseado, dias_semana, entorno_entrenamiento, objetivo, rutina) 
+                            VALUES (:usuario_id, :titulo, :nivel, :altura, :peso, :peso_deseado, :dias_semana, :entorno_entrenamiento, :objetivo, :rutina)");
     
     // Bind de los parámetros
     $stmt->bindParam(':usuario_id', $data->usuario_id);
@@ -31,6 +31,7 @@ try {
     $stmt->bindParam(':dias_semana', $data->dias_semana);
     $stmt->bindParam(':entorno_entrenamiento', $data->entorno);
     $stmt->bindParam(':objetivo', $data->objetivo);
+    $stmt->bindParam(':rutina', $data->rutina);
     
     // Ejecutar la consulta
     $stmt->execute();

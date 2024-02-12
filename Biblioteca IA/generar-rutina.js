@@ -79,7 +79,20 @@ function guardarRutina() {
 
     // Obtén la rutina del modal
     var rutina = document.getElementById('rutinaModalBody').textContent;
-    var tituloRutina = document.getElementById('tituloRutina').value;
+    var tituloRutinaInput = document.getElementById('tituloRutina');
+    var tituloRutina = tituloRutinaInput.value;
+
+    // Verifica si el título está vacío
+    if (tituloRutina.trim() === "") {
+        // Muestra el mensaje de error y resalta el borde del input
+        document.getElementById('errorTitulo').textContent = 'Por favor, ingresa un título para la rutina.';
+        tituloRutinaInput.style.borderColor = 'red';
+        return;
+    } else {
+        // Limpia el mensaje de error y restablece el borde del input
+        document.getElementById('errorTitulo').textContent = '';
+        tituloRutinaInput.style.borderColor = ''; // Dejar que el navegador maneje el estilo del borde
+    }
 
     // Construye un objeto con los datos a enviar
     var data = {

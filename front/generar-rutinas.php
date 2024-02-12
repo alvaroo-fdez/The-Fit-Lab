@@ -106,6 +106,7 @@
             <div class="form-group" id="grupotitulorutina" style="padding-top: 30px;padding-left: 20px;padding-right: 20px;">
                 <label for="tituloRutina">Título de la Rutina:</label>
                 <input type="text" class="form-control" id="tituloRutina" name="tituloRutina">
+                <span id="errorTitulo" style="color: red;"></span>
             </div>
             <div class="modal-body" id="rutinaModalBody">
                 <!-- Contenido de la rutina generada se añadirá aquí -->
