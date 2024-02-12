@@ -118,6 +118,7 @@
     </div>
 </div>
 
+<script src="../js/obtener_api.js"></script>
 <script src="../Biblioteca IA/generar-rutina.js"></script>
 <script src="../js/actualizar_semana.js"></script>
 
