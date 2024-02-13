@@ -178,7 +178,7 @@ a.text-secondary.btn, a.text-secondary.btn:Active, a.text-secondary.btn:focus, a
 }
 
 .card:not([class*="bg-"]).card-load .card-loader i {
-    color: #1abc9c;
+    color: #7ED956;
 }
 
 .card.user-profile-list {
@@ -247,7 +247,7 @@ a.text-secondary.btn, a.text-secondary.btn:Active, a.text-secondary.btn:focus, a
 }
 
 .pcoded-navbar.navbar-dark .header-logo .b-bg {
-    background: #1abc9c;
+    background: #7ED956;
 }
 
 /* ===================  Navbar end  ===================== */
@@ -484,7 +484,7 @@ table.DTFC_Cloned tr {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
     color: #fff !important;
-    background: #1abc9c;
+    background: #7ED956;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -955,11 +955,11 @@ pre[class*=language-] > code {
 }
 
 .chat-card .send-chat .msg {
-    background-color: #1abc9c;
+    background-color: #7ED956;
 }
 
 .chat-card .send-chat .msg:after {
-    border-right-color: #1abc9c;
+    border-right-color: #7ED956;
 }
 
 .chat-card .received-chat .msg {
@@ -1016,7 +1016,7 @@ pre[class*=language-] {
 }
 
 .card .card-block pre[class*=language-] > code {
-    box-shadow: -1px 0 0 0 #1abc9c, 0 0 0 1px #273646;
+    box-shadow: -1px 0 0 0 #7ED956, 0 0 0 1px #273646;
     background: #2a3b4d;
     background-size: 3em 3em;
     background-origin: content-box;

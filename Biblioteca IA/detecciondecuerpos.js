@@ -116,5 +116,5 @@ async function iniciarwebcamcondeteccion(URL) {
 
 }
 
-let modelo = "./modelojs/";
+let modelo = "../pruebas/modelojs/";
 iniciarwebcamcondeteccion(modelo)
