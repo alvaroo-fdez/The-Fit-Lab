@@ -9,7 +9,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <div class="page-header-title">
-                                <h5>Lista de Rutinas</h5>
+                                <h5>¡Entrena con una nueva rutina!</h5>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -118,9 +118,9 @@
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../js/obtener_api.js"></script>
 <script src="../Biblioteca IA/generar-rutina.js"></script>
-<script src="../js/actualizar_semana.js"></script>
+<script src="../js/formulario-rutina.js"></script>
 
 <?php require_once('footer.php') ?>

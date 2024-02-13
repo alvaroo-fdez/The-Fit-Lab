@@ -7,7 +7,7 @@ async function obtenerApiKey() {
 
         const data = await response.json();
         apiKey = data.api_key;
-        console.log('API Key:', apiKey);
+        //console.log('API Key:', apiKey);
     } catch (error) {
         console.error('Error al obtener la API key:', error);
     }
