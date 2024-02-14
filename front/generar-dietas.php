@@ -27,13 +27,13 @@
             <!-- Content Section -->
             <div class="row">
                 <div class="col-md-12">
-                    <!-- Listado de rutinas en tarjetas -->
+                    <!-- Listado de dietas en tarjetas -->
                     <div class="card">
                         <div class="card-header">
                             <h5>Generar tu dieta</h5>
                         </div>
                         <div class="card-body">
-                            <form id="dietaForm">
+                            <form id="dietaForm" onsubmit="generarDieta(event)">
                                 <div class="form-group">
                                     <label for="nivel">Nivel de actividad:</label>
                                     <select class="form-control" id="nivel" name="nivel">
@@ -62,8 +62,8 @@
                                 <div class="form-group">
                                     <label for="sexo">Sexo:</label>
                                     <select class="form-control" id="sexo" name="sexo">
-                                        <option value="gimnasio">Masculino</option>
-                                        <option value="casa_sin_equipamiento">Femenino</option>
+                                        <option value="masculino">Masculino</option>
+                                        <option value="femenino">Femenino</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -79,7 +79,7 @@
                                     <label for="requisitos">Requisitos adicionales:</label>
                                     <textarea class="form-control" id="requisitos" name="requisitos" rows="3" placeholder="Por ejemplo: Soy vegetariano, no me gusta la piña, soy alérgico a el gluten..."></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary" id="btnGenerarRutina">Generar Rutina</button>
+                                <button type="submit" class="btn btn-primary" id="btnGenerarDieta">Generar Dieta</button>
                             </form>
                         </div>
                     </div>

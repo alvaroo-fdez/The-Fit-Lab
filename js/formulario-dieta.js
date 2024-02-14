@@ -46,19 +46,16 @@ document.addEventListener("DOMContentLoaded", function () {
             setError('objetivo', 'Por favor, selecciona un objetivo.');
             formIsValid = false;
         }
-        if (!requisitos) {
-            setError('requisitos', 'Por favor, indica cosas necesarias a la hora de generar tu dieta.');
-            formIsValid = false;
-        }
 
 
         // Detener el envío del formulario si hay campos vacíos
         if (!formIsValid) {
             event.preventDefault();
-        } else {
-            // Lógica adicional para procesar la generación de la dieta
-            generarDieta(nivel, altura, peso, pesoDeseado, edad, sexo, objetivo, requisitos);
-        }
+        } 
+        // else {
+        //     // Lógica adicional para procesar la generación de la dieta
+        //     generarDieta(nivel, altura, peso, pesoDeseado, edad, sexo, objetivo, requisitos);
+        // }
     });
 });
 

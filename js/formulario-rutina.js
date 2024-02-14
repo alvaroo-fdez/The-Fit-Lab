@@ -74,3 +74,7 @@ function resetFormStyles() {
         }
     });
 }
+
+function actualizarDiasSemana(valor) {
+    document.getElementById('dias-semana-valor').innerText = valor;
+}
