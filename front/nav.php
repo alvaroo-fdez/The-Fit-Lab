@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-
+<?php session_start(); ?>
 <head>
     <title>The Fit Lab</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
-
-    <!-- vendor css 
-    <link rel="stylesheet" href="../assets/css/style.css">-->
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
 </head>
 
@@ -28,7 +25,7 @@
                     <div class="main-menu-header">
                         <img class="img-radius" src="../assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
                         <div class="user-details">
-                            <span>John Doe</span>
+                            <span><?php echo $_COOKIE['nombre'] ?></span>
                             <div id="more-details">Perfil<i class="fa fa-chevron-down m-l-5"></i></div>
                         </div>
                     </div>

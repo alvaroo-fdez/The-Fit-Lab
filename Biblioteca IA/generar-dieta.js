@@ -36,8 +36,6 @@ function generarDieta(event) {
             ]
         };
 
-
-
         fetch(apiUrl, {
             method: 'POST',
             headers: headers,

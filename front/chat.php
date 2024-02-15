@@ -1,4 +1,6 @@
-<?php require_once('nav.php') ?>
+<?php require_once('nav.php') ;
+echo $_COOKIE['id'];
+?>
 
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
