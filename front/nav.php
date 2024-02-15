@@ -8,9 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
 
-    <!-- vendor css -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-
+    <!-- vendor css 
+    <link rel="stylesheet" href="../assets/css/style.css">-->
+    <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
 </head>
 
 <body class="">
