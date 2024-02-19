@@ -1,16 +1,18 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Lógica de inicialización, si es necesaria
-});
-
 function sendMessage() {
     // Obtén el mensaje del usuario desde el input
-    var userMessage = document.getElementById('user-message-input').value;
+    var userMessageInput = document.getElementById('user-message-input');
+    var userMessage = userMessageInput.value;
 
-    // Añade el mensaje del usuario al contenedor de chat
-    appendMessage('send-chat', userMessage);
+    if (userMessage.trim() !== "") {
+        // Añade el mensaje del usuario al contenedor de chat
+        appendMessage('send-chat', userMessage);
 
-    // Llama a la función para generar la respuesta usando la API de OpenAI
-    generateGptResponse(userMessage);
+        // Llama a la función para generar la respuesta usando la API de OpenAI
+        generateGptResponse(userMessage);
+
+        // Vacía el input después de enviar el mensaje
+        userMessageInput.value = "";
+    }
 }
 
 function appendMessage(className, message) {
@@ -68,4 +70,11 @@ function getCurrentTime() {
     var hours = now.getHours().toString().padStart(2, '0');
     var minutes = now.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
+}
+
+function presionarEnter(event) {
+    // Si la tecla presionada es Enter, llama a la función sendMessage
+    if (event.key === "Enter") {
+        sendMessage();
+    }
 }

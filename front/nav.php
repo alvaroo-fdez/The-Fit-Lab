@@ -23,7 +23,7 @@
             <div class="navbar-content scroll-div ">
                 <div class="">
                     <div class="main-menu-header">
-                        <img class="img-radius" src="../assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
+                        <img class="img-radius" src="../assets/images/imagen_perfil.jpg" alt="User-Profile-Image">
                         <div class="user-details">
                             <span><?php echo $_COOKIE['nombre'] ?></span>
                             <div id="more-details">Perfil<i class="fa fa-chevron-down m-l-5"></i></div>
@@ -31,10 +31,10 @@
                     </div>
                     <div class="collapse" id="nav-user-link">
                         <ul class="list-unstyled">
-                            <li class="list-group-item"><a href="user-profile.html"><i
+                            <!-- <li class="list-group-item"><a href="user-profile.html"><i
                                         class="feather icon-user m-r-5"></i>View Profile</a></li>
                             <li class="list-group-item"><a href="#!"><i
-                                        class="feather icon-settings m-r-5"></i>Settings</a></li>
+                                        class="feather icon-settings m-r-5"></i>Settings</a></li> -->
                             <li class="list-group-item"><a href="auth-normal-sign-in.html"><i
                                         class="feather icon-log-out m-r-5"></i>Logout</a></li>
                         </ul>

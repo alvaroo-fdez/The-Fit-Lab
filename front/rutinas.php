@@ -1,32 +1,30 @@
-<?php require_once('nav.php') ?>
+<?php 
+require_once('nav.php');
+require_once('../back/Conexion.php');
+// Obtener el usuario_id desde la cookie
+$usuario_id = $_COOKIE['id'];
+
+// Crear una instancia de la clase Conexion
+$conexion = new Conexion();
+
+// Realizar la consulta para obtener las rutinas del usuario actual
+$query = "SELECT * FROM rutinas WHERE usuario_id = :usuario_id";
+$stmt = $conexion->prepare($query);
+$stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+$stmt->execute();
+
+// Obtener los resultados de la consulta
+$rutinas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <div class="page-header-title">
-                                <h5>Lista de Rutinas</h5>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="#!">Inicio</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="#!">Rutinas</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Resto de tu código ... -->
 
             <!-- Content Section -->
             <div class="row">
-
                 <div class="col-md-12">
                     <!-- Listado de rutinas en tarjetas -->
                     <div class="card">
@@ -34,22 +32,49 @@
                             <h5>Rutinas Disponibles</h5>
                         </div>
                         <div class="card-body">
-                            <!-- Ejemplo de tarjeta -->
-                            <div class="card col-md-4">
+                            <!-- Iterar sobre los resultados de la consulta -->
+                            <?php foreach ($rutinas as $rutina) { ?>
+                            <div class="card col-md-12 mb-3">
                                 <div class="card-body">
-                                    <h5 class="card-title">Nombre de la Rutina</h5>
-                                    <p class="card-text">Descripción de la rutina.</p>
-                                    <!-- Otros detalles de la rutina -->
+                                    <h5 class="card-title"><?php echo $rutina['titulo']; ?></h5>
+                                    <p class="card-text">
+                                        Peso inicial: <?php echo $rutina['peso']; ?> kg,
+                                        Peso deseado: <?php echo $rutina['peso_deseado']; ?> kg,
+                                        Objetivo: <?php echo $rutina['objetivo']; ?>,
+                                        Entrenando desde: <?php echo $rutina['entorno_entrenamiento']; ?>
+                                    </p>
+                                    <h6 class="card-subtitle mb-2 text-muted">Rutina:</h6>
+                                    <?php
+                                        $rutina_text = $rutina['rutina'];
+                                        // Dividir la rutina por días
+                                        $dias = explode("Día", $rutina_text);
+                                        foreach ($dias as $dia) {
+                                            // Ignorar líneas vacías
+                                            if (!empty(trim($dia))) {
+                                                echo "<p><strong>Día $dia</strong></p>";
+                                                // Mostrar ejercicios del día
+                                                echo "<ul>";
+                                                $ejercicios = explode("-", $dia);
+                                                foreach ($ejercicios as $ejercicio) {
+                                                    // Ignorar líneas vacías
+                                                    if (!empty(trim($ejercicio))) {
+                                                        echo "<li>" . trim($ejercicio) . "</li>";
+                                                    }
+                                                }
+                                                echo "</ul>";
+                                            }
+                                        }
+                                    ?>
                                 </div>
                             </div>
-                            <!-- Repite este bloque para cada rutina en la base de datos -->
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
-</div>
-</div>
 </div>
 <?php require_once('footer.php') ?>

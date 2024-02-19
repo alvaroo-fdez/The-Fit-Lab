@@ -22,7 +22,7 @@ try {
                             VALUES (:usuario_id,:titulo, :nivel, :altura, :peso, :peso_deseado, :edad, :sexo, :objetivo, :requisitos, :dieta)");
     
     // Bind de los parámetros
-    $stmt->bindParam(':usuario_id', $data->usuario_id);
+    $stmt->bindParam(':usuario_id', $_COOKIE['id']);
     $stmt->bindParam(':titulo', $data->titulo);
     $stmt->bindParam(':nivel', $data->nivel);
     $stmt->bindParam(':altura', $data->altura);
