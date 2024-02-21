@@ -20,7 +20,64 @@ function generarDieta(event) {
         var objetivo = document.getElementById("objetivo").value;
         var requisitos = document.getElementById("requisitos").value;
 
-        var formato = 'Sexo: (sexo), Nivel: (nivel), Altura: (altura) cm, Peso inicial: (peso) kg, peso deseado: (peso deseado) kg, con (edad) años, con el objetivo de: (objetivo) y los siguientes requisitos: (requisitos). Debe comer (número de calorías necesarias para lograr el objetivo con los datos proporcionados) calorías, (gramos de proteína) gramos de proteína, (gramos de carbohidratos) gramos de carbohidratos y (gramos de grasas) gramos de grasas. <br> Día (número de día correspondiente) <br> -(Momento de día como desayuno, almuerzo, etc.) <br> (Comida a realizar) (Proporcióname detalles para todos los días de la semana.)';
+        //var formato = 'Sexo: (sexo), Nivel: (nivel), Altura: (altura) cm, Peso inicial: (peso) kg, peso deseado: (peso deseado) kg, con (edad) años, con el objetivo de: (objetivo) y los siguientes requisitos: (requisitos). Debe comer (número de calorías necesarias para lograr el objetivo con los datos proporcionados) calorías, (gramos de proteína) gramos de proteína, (gramos de carbohidratos) gramos de carbohidratos y (gramos de grasas) gramos de grasas. <br> Día (número de día correspondiente) <br> -(Momento de día como desayuno, almuerzo, etc.) <br> (Comida a realizar) (Proporcióname detalles para todos los días de la semana.)';
+
+        let formato = "<table>\
+        <tr>\
+          <th colspan='8'>Dieta</th>\
+        </tr>\
+        <tr>\
+        <td></td>\
+          <td>Lunes</td>\
+          <td>Martes</td>\
+          <td>Miércoles</td>\
+          <td>Jueves</td>\
+          <td>Viernes</td>\
+          <td>Sábado</td>\
+          <td>Domingo</td>\
+        </tr>\
+        <tr>\
+          <td>Desayuno</td>\
+          <td>(Desayuno Lunes)</td>\
+          <td>(Desayuno Martes)</td>\
+          <td>(Desayuno Miércoles)</td>\
+          <td>(Desayuno Jueves)</td>\
+          <td>(Desayuno Viernes)</td>\
+          <td>(Desayuno Sábado)</td>\
+          <td>(Desayuno Domingo)</td>\
+        </tr>\
+        <tr>\
+          <td>Comida</td>\
+          <td>(Comida Lunes)</td>\
+          <td>(Comida Martes)</td>\
+          <td>(Comida Miércoles)</td>\
+          <td>(Comida Jueves)</td>\
+          <td>(Comida Viernes)</td>\
+          <td>(Comida Sábado)</td>\
+          <td>(Comida Domingo)</td>\
+        </tr>\
+        <tr>\
+          <td>Merienda</td>\
+          <td>(Merienda Lunes)</td>\
+          <td>(Merienda Martes)</td>\
+          <td>(Merienda Miércoles)</td>\
+          <td>(Merienda Jueves)</td>\
+          <td>(Merienda Viernes)</td>\
+          <td>(Merienda Sábado)</td>\
+          <td>(Merienda Domingo)</td>\
+        </tr>\
+        <tr>\
+          <td>Cena</td>\
+          <td>(Cena Lunes)</td>\
+          <td>(Cena Martes)</td>\
+          <td>(Cena Miércoles)</td>\
+          <td>(Cena Jueves)</td>\
+          <td>(Cena Viernes)</td>\
+          <td>(Cena Sábado)</td>\
+          <td>(Cena Domingo)</td>\
+        </tr>\
+      </table>";
+
 
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
@@ -32,7 +89,7 @@ function generarDieta(event) {
             model: 'gpt-3.5-turbo',
             messages: [
                 { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una dieta adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
-                { role: 'user', content: 'Genera una dieta para un usuario de sexo ' + sexo + ', con nivel: ' + nivel + ', altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ', con: ' + edad + ' años, con el objetivo ' + objetivo + ' y con los siguientes requisitos personales: ' + requisitos + '. Asegúrate de que la dieta incluya un número apropiado de calorías para lograr el objetivo y ajusta las proporciones de proteínas, carbohidratos y grasas según sea necesario.' },
+                { role: 'user', content: 'Genera una dieta para un usuario de sexo ' + sexo + ', con nivel: ' + nivel + ', altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ', con: ' + edad + ' años, con el objetivo ' + objetivo + ' y con los siguientes requisitos personales (si los hay): ' + requisitos + '.' },
             ]
         };
 
@@ -46,17 +103,17 @@ function generarDieta(event) {
                 var respuestaGenerada = result.choices[0].message.content;
                 console.log(respuestaGenerada);
 
-                // Reemplaza las líneas nuevas con un solo <br>
-                respuestaGenerada = respuestaGenerada.replace(/\n+/g, '<br>');
+                // // Reemplaza las líneas nuevas con un solo <br>
+                // respuestaGenerada = respuestaGenerada.replace(/\n+/g, '<br>');
 
-                // Agrega títulos para los días
-                respuestaGenerada = respuestaGenerada.replace(/Día (\d+)/g, '<br><strong>Día $1:</strong>');
+                // // Agrega títulos para los días
+                // respuestaGenerada = respuestaGenerada.replace(/Día (\d+)/g, '<br><strong>Día $1:</strong>');
 
-                // Elimina <br> al principio y al final de la cadena si los hay
-                respuestaGenerada = respuestaGenerada.replace(/^<br>/, '').replace(/<br>$/, '');
+                // // Elimina <br> al principio y al final de la cadena si los hay
+                // respuestaGenerada = respuestaGenerada.replace(/^<br>/, '').replace(/<br>$/, '');
 
-                // Elimina <br> entre títulos y detalles de la tabla
-                respuestaGenerada = respuestaGenerada.replace(/<\/strong><br><strong>/g, '</strong>');
+                // // Elimina <br> entre títulos y detalles de la tabla
+                // respuestaGenerada = respuestaGenerada.replace(/<\/strong><br><strong>/g, '</strong>');
 
                 // Actualiza el contenido del modal
                 var rutinaModalBody = document.getElementById('rutinaModalBody');
@@ -85,7 +142,7 @@ function guardarDieta() {
     var requisitos = document.getElementById("requisitos").value;
 
     // Obtén la rutina del modal
-    var dieta = document.getElementById('rutinaModalBody').textContent;
+    var dieta = document.getElementById('rutinaModalBody').innerHTML;
     var tituloRutinaInput = document.getElementById('tituloRutina');
     var tituloRutina = tituloRutinaInput.value;
 

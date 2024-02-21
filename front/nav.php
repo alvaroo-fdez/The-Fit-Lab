@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modales.css">
 </head>
 
 <body class="">
@@ -67,13 +68,11 @@
                         <label>Dieta</label>
                     </li>
                     <li class="nav-item">
-                        <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-pie-chart"></i></span><span class="pcoded-mtext">Mis
+                        <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-list-ul"></i></span><span class="pcoded-mtext">Mis
                                 dietas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-map"></i></span><span class="pcoded-mtext">Generar
+                        <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-utensils"></i></span><span class="pcoded-mtext">Generar
                                 dieta</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">

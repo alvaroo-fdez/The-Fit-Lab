@@ -19,7 +19,36 @@ function generarRutina(event) {
         var entorno = document.getElementById("entorno").value;
         var objetivo = document.getElementById("objetivo").value;
 
-        formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
+        //formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
+
+        let formato = "<table>\
+            <tr>\
+                <th colspan='" + (dias_semana + 1) + "'>Rutina</th>\
+            </tr>\
+            <tr>\
+                <td></td>";
+
+        // Agregar días a la primera fila
+        for (var i = 0; i < dias_semana; i++) {
+            formato += "<td>Día " + (i + 1) + "</td>";
+        }
+
+        formato += "</tr>";
+
+        // Agregar filas para cada ejercicio
+        for (var i = 1; i <= 5; i++) {
+            formato += "<tr>\
+                <td>Ejercicio " + i + "</td>";
+
+            // Agregar celdas para cada día
+            for (var j = 0; j < dias_semana; j++) {
+                formato += "<td>(Ejercicio " + i + " Día " + (j + 1) + ")</td>";
+            }
+
+            formato += "</tr>";
+        }
+
+        formato += "</table>";
 
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
@@ -80,7 +109,7 @@ function guardarRutina() {
     var objetivo = document.getElementById("objetivo").value;
 
     // Obtén la rutina del modal
-    var rutina = document.getElementById('rutinaModalBody').textContent;
+    var rutina = document.getElementById('rutinaModalBody').innerHTML;
     var tituloRutinaInput = document.getElementById('tituloRutina');
     var tituloRutina = tituloRutinaInput.value;
 
