@@ -1,23 +1,22 @@
 <?php
-// guardar_dieta.php
-
-// Recibe los datos enviados por la solicitud AJAX
+require_once 'Conexion.php';
+// Recibimos los datos enviados por la solicitud AJAX
 $data = json_decode(file_get_contents("php://input"));
 
-// Configuración de la conexión a la base de datos (ajusta los valores según tu entorno)
+// Configuración de la conexión a la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "the fit lab";
 
 try {
-    // Crear una nueva conexión PDO
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // Creamos una nueva conexión
+    $conn = new Conexion();
     
-    // Establecer el modo de error PDO a excepción
+    // Establecemos el modo de error PDO a excepción
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Preparar la consulta SQL para la inserción de la dieta
+    // Prepararamos la consulta SQL para la inserción de la dieta
     $stmt = $conn->prepare("INSERT INTO dietas (usuario_id, titulo, nivel, altura, peso, peso_deseado, edad, sexo, objetivo, requisitos, dieta) 
                             VALUES (:usuario_id,:titulo, :nivel, :altura, :peso, :peso_deseado, :edad, :sexo, :objetivo, :requisitos, :dieta)");
     
@@ -34,27 +33,27 @@ try {
     $stmt->bindParam(':requisitos', $data->requisitos);
     $stmt->bindParam(':dieta', $data->dieta);
     
-    // Ejecutar la consulta
+    // Ejecutamos la consulta
     $stmt->execute();
 
-    // Obtener el ID de la nueva dieta insertada
+    // Obtenemos el ID de la nueva dieta insertada
     $dieta_id = $conn->lastInsertId();
 
-    // Construir una respuesta de éxito
+    // Construimos una respuesta extiosa
     $response = array('mensaje' => 'Dieta generada con éxito.', 'dieta_id' => $dieta_id);
 
-    // Enviar la respuesta al cliente
+    // Enviamos la respuesta al cliente
     header('Content-Type: application/json');
     echo json_encode($response);
 } catch(PDOException $e) {
-    // Manejar errores de la conexión o de la consulta
+    // Manejo de errores de la conexión o de la consulta
     $response = array('error' => 'Error al generar la dieta: ' . $e->getMessage());
 
-    // Enviar la respuesta de error al cliente
+    // Enviamos la respuesta de error al cliente
     header('Content-Type: application/json', true, 500);
     echo json_encode($response);
 }
 
-// Cerrar la conexión
+// Cierre de conexión
 $conn = null;
 ?>

@@ -1,6 +1,4 @@
 <?php
-// recoger_api.php
-
 // Cargar las variables de entorno desde el archivo .env (ajusta la ruta según tu estructura)
 $dotenvPath = __DIR__ . '/../.env';
 if (file_exists($dotenvPath)) {

@@ -1,95 +1,37 @@
+// Función para generar una dieta al hacer clic en el botón correspondiente
 function generarDieta(event) {
-    event.preventDefault();
+    event.preventDefault(); // Evita el comportamiento predeterminado del formulario
 
+    // Obtiene la clave de la API antes de continuar
     obtenerApiKey().then(() => {
-        // Una vez que se haya obtenido la API key, podemos usarla
-        //console.log(apiKey);
-
-        // Aquí puedes continuar con el resto de tu código que depende de la API key.
         // Deshabilita el botón y muestra un indicador de carga
         var btnGenerarDieta = document.getElementById('btnGenerarDieta');
         btnGenerarDieta.disabled = true;
         btnGenerarDieta.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
-        // Recoge los valores de los campos del formulario
-        var nivel = document.getElementById("nivel").value;
-        var altura = document.getElementById("altura").value;
-        var peso = document.getElementById("peso").value;
-        var peso_deseado = document.getElementById("peso_deseado").value;
-        var edad = document.getElementById("edad").value;
-        var sexo = document.getElementById("sexo").value;
-        var objetivo = document.getElementById("objetivo").value;
-        var requisitos = document.getElementById("requisitos").value;
 
-        //var formato = 'Sexo: (sexo), Nivel: (nivel), Altura: (altura) cm, Peso inicial: (peso) kg, peso deseado: (peso deseado) kg, con (edad) años, con el objetivo de: (objetivo) y los siguientes requisitos: (requisitos). Debe comer (número de calorías necesarias para lograr el objetivo con los datos proporcionados) calorías, (gramos de proteína) gramos de proteína, (gramos de carbohidratos) gramos de carbohidratos y (gramos de grasas) gramos de grasas. <br> Día (número de día correspondiente) <br> -(Momento de día como desayuno, almuerzo, etc.) <br> (Comida a realizar) (Proporcióname detalles para todos los días de la semana.)';
+        // Obtiene los datos del usuario desde el formulario
+        var datosUsuario = obtenerDatosUsuario();
 
-        let formato = "<table>\
-        <tr>\
-        <td></td>\
-          <td>Lunes</td>\
-          <td>Martes</td>\
-          <td>Miércoles</td>\
-          <td>Jueves</td>\
-          <td>Viernes</td>\
-          <td>Sábado</td>\
-          <td>Domingo</td>\
-        </tr>\
-        <tr>\
-          <td>Desayuno</td>\
-          <td>(Desayuno Lunes)(cantidad de comida)</td>\
-          <td>(Desayuno Martes)(cantidad de comida)</td>\
-          <td>(Desayuno Miércoles)(cantidad de comida)</td>\
-          <td>(Desayuno Jueves)(cantidad de comida)</td>\
-          <td>(Desayuno Viernes)(cantidad de comida)</td>\
-          <td>(Desayuno Sábado)(cantidad de comida)</td>\
-          <td>(Desayuno Domingo)(cantidad de comida)</td>\
-        </tr>\
-        <tr>\
-          <td>Comida</td>\
-          <td>(Comida Lunes)(cantidad de comida)</td>\
-          <td>(Comida Martes)(cantidad de comida)</td>\
-          <td>(Comida Miércoles)(cantidad de comida)</td>\
-          <td>(Comida Jueves)(cantidad de comida)</td>\
-          <td>(Comida Viernes)(cantidad de comida)</td>\
-          <td>(Comida Sábado)(cantidad de comida)</td>\
-          <td>(Comida Domingo)(cantidad de comida)</td>\
-        </tr>\
-        <tr>\
-          <td>Merienda</td>\
-          <td>(Merienda Lunes)(cantidad de comida)</td>\
-          <td>(Merienda Martes)(cantidad de comida)</td>\
-          <td>(Merienda Miércoles)(cantidad de comida)</td>\
-          <td>(Merienda Jueves)(cantidad de comida)</td>\
-          <td>(Merienda Viernes)(cantidad de comida)</td>\
-          <td>(Merienda Sábado)(cantidad de comida)</td>\
-          <td>(Merienda Domingo)(cantidad de comida)</td>\
-        </tr>\
-        <tr>\
-          <td>Cena</td>\
-          <td>(Cena Lunes)(cantidad de comida)</td>\
-          <td>(Cena Martes)(cantidad de comida)</td>\
-          <td>(Cena Miércoles)(cantidad de comida)</td>\
-          <td>(Cena Jueves)(cantidad de comida)</td>\
-          <td>(Cena Viernes)(cantidad de comida)</td>\
-          <td>(Cena Sábado)(cantidad de comida)</td>\
-          <td>(Cena Domingo)(cantidad de comida)</td>\
-        </tr>\
-      </table>";
+        // Construye el formato de la dieta para incluirlo en la solicitud a la API
+        let formato = construirFormatoDieta();
 
-
+        // URL y encabezados para la solicitud a la API de OpenAI
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + apiKey
         };
 
+        // Datos para la solicitud a la API
         var data = {
             model: 'gpt-3.5-turbo',
             messages: [
                 { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una dieta adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
-                { role: 'user', content: 'Genera una dieta para un usuario de sexo ' + sexo + ', con nivel: ' + nivel + ', altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ', con: ' + edad + ' años, con el objetivo ' + objetivo + ' y con los siguientes requisitos personales (si los hay): ' + requisitos + '.' },
+                { role: 'user', content: 'Genera una dieta para un usuario de sexo ' + datosUsuario.sexo + ', con nivel: ' + datosUsuario.nivel + ', altura: ' + datosUsuario.altura + ' cm, peso: ' + datosUsuario.peso + ' kg, peso deseado: ' + datosUsuario.peso_deseado + ', con: ' + datosUsuario.edad + ' años, con el objetivo ' + datosUsuario.objetivo + ' y con los siguientes requisitos personales (si los hay): ' + datosUsuario.requisitos + '.' },
             ]
         };
 
+        // Realiza la solicitud a la API utilizando fetch
         fetch(apiUrl, {
             method: 'POST',
             headers: headers,
@@ -97,29 +39,16 @@ function generarDieta(event) {
         })
             .then(response => response.json())
             .then(result => {
+                // Obtiene la respuesta generada por el modelo
                 var respuestaGenerada = result.choices[0].message.content;
                 console.log(respuestaGenerada);
 
-                // // Reemplaza las líneas nuevas con un solo <br>
-                // respuestaGenerada = respuestaGenerada.replace(/\n+/g, '<br>');
-
-                // // Agrega títulos para los días
-                // respuestaGenerada = respuestaGenerada.replace(/Día (\d+)/g, '<br><strong>Día $1:</strong>');
-
-                // // Elimina <br> al principio y al final de la cadena si los hay
-                // respuestaGenerada = respuestaGenerada.replace(/^<br>/, '').replace(/<br>$/, '');
-
-                // // Elimina <br> entre títulos y detalles de la tabla
-                // respuestaGenerada = respuestaGenerada.replace(/<\/strong><br><strong>/g, '</strong>');
-
-                // Actualiza el contenido del modal
+                // Actualiza el contenido del modal con la respuesta generada
                 var rutinaModalBody = document.getElementById('rutinaModalBody');
                 rutinaModalBody.innerHTML = respuestaGenerada;
 
-                // Muestra el modal
+                // Muestra el modal con la respuesta generada
                 $('#rutinaModal').modal('show');
-
-                limpiarCampos();
 
                 // Habilita nuevamente el botón después de recibir la respuesta
                 btnGenerarDieta.disabled = false;
@@ -127,20 +56,14 @@ function generarDieta(event) {
             })
             .catch(error => console.error('Error:', error));
     });
-
 }
 
+// Función para guardar la dieta generada
 function guardarDieta() {
-    var nivel = document.getElementById("nivel").value;
-    var altura = document.getElementById("altura").value;
-    var peso = document.getElementById("peso").value;
-    var peso_deseado = document.getElementById("peso_deseado").value;
-    var edad = document.getElementById("edad").value;
-    var sexo = document.getElementById("sexo").value;
-    var objetivo = document.getElementById("objetivo").value;
-    var requisitos = document.getElementById("requisitos").value;
+    // Obtiene los datos del usuario desde el formulario
+    var datosUsuario = obtenerDatosUsuario();
 
-    // Obtén la rutina del modal
+    // Obtiene la dieta generada del modal
     var dieta = document.getElementById('rutinaModalBody').innerHTML;
     var tituloRutinaInput = document.getElementById('tituloRutina');
     var tituloRutina = tituloRutinaInput.value;
@@ -157,21 +80,21 @@ function guardarDieta() {
         tituloRutinaInput.style.borderColor = ''; // Dejar que el navegador maneje el estilo del borde
     }
 
-    // Construye un objeto con los datos a enviar
+    // Construye un objeto con los datos a enviar al servidor
     var data = {
-        nivel: nivel,
-        altura: altura,
-        peso: peso,
-        peso_deseado: peso_deseado,
-        edad: edad,
-        sexo: sexo,
-        objetivo: objetivo,
+        nivel: datosUsuario.nivel,
+        altura: datosUsuario.altura,
+        peso: datosUsuario.peso,
+        peso_deseado: datosUsuario.peso_deseado,
+        edad: datosUsuario.edad,
+        sexo: datosUsuario.sexo,
+        objetivo: datosUsuario.objetivo,
         titulo: tituloRutina,
-        requisitos: requisitos,
+        requisitos: datosUsuario.requisitos,
         dieta: dieta
     };
 
-    // Envía la rutina y los datos al servidor PHP para su inserción
+    // Envía la dieta y los datos al servidor PHP para su inserción
     fetch('../back/guardar_dieta.php', {
         method: 'POST',
         headers: {
@@ -190,6 +113,9 @@ function guardarDieta() {
                 text: 'Título: ' + tituloRutina,
             });
 
+            // Limpia los campos del formulario
+            limpiarCampos();
+
             // Cierra el modal después de guardar
             $('#rutinaModal').modal('hide');
         })
@@ -205,6 +131,77 @@ function guardarDieta() {
 
     // Cierra el modal después de guardar
     $('#rutinaModal').modal('hide');
+}
+
+// Función para construir el formato de la dieta en HTML
+function construirFormatoDieta() {
+    let formatoDieta = "<table>\
+    <tr>\
+    <td></td>\
+      <td>Lunes</td>\
+      <td>Martes</td>\
+      <td>Miércoles</td>\
+      <td>Jueves</td>\
+      <td>Viernes</td>\
+      <td>Sábado</td>\
+      <td>Domingo</td>\
+    </tr>\
+    <tr>\
+      <td>Desayuno</td>\
+      <td>(Desayuno Lunes)(cantidad de comida)</td>\
+      <td>(Desayuno Martes)(cantidad de comida)</td>\
+      <td>(Desayuno Miércoles)(cantidad de comida)</td>\
+      <td>(Desayuno Jueves)(cantidad de comida)</td>\
+      <td>(Desayuno Viernes)(cantidad de comida)</td>\
+      <td>(Desayuno Sábado)(cantidad de comida)</td>\
+      <td>(Desayuno Domingo)(cantidad de comida)</td>\
+    </tr>\
+    <tr>\
+      <td>Comida</td>\
+      <td>(Comida Lunes)(cantidad de comida)</td>\
+      <td>(Comida Martes)(cantidad de comida)</td>\
+      <td>(Comida Miércoles)(cantidad de comida)</td>\
+      <td>(Comida Jueves)(cantidad de comida)</td>\
+      <td>(Comida Viernes)(cantidad de comida)</td>\
+      <td>(Comida Sábado)(cantidad de comida)</td>\
+      <td>(Comida Domingo)(cantidad de comida)</td>\
+    </tr>\
+    <tr>\
+      <td>Merienda</td>\
+      <td>(Merienda Lunes)(cantidad de comida)</td>\
+      <td>(Merienda Martes)(cantidad de comida)</td>\
+      <td>(Merienda Miércoles)(cantidad de comida)</td>\
+      <td>(Merienda Jueves)(cantidad de comida)</td>\
+      <td>(Merienda Viernes)(cantidad de comida)</td>\
+      <td>(Merienda Sábado)(cantidad de comida)</td>\
+      <td>(Merienda Domingo)(cantidad de comida)</td>\
+    </tr>\
+    <tr>\
+      <td>Cena</td>\
+      <td>(Cena Lunes)(cantidad de comida)</td>\
+      <td>(Cena Martes)(cantidad de comida)</td>\
+      <td>(Cena Miércoles)(cantidad de comida)</td>\
+      <td>(Cena Jueves)(cantidad de comida)</td>\
+      <td>(Cena Viernes)(cantidad de comida)</td>\
+      <td>(Cena Sábado)(cantidad de comida)</td>\
+      <td>(Cena Domingo)(cantidad de comida)</td>\
+    </tr>\
+  </table>";
+    return formatoDieta;
+}
+
+// Función para obtener los datos del usuario desde el formulario
+function obtenerDatosUsuario() {
+    return {
+        nivel: document.getElementById("nivel").value,
+        altura: document.getElementById("altura").value,
+        peso: document.getElementById("peso").value,
+        peso_deseado: document.getElementById("peso_deseado").value,
+        edad: document.getElementById("edad").value,
+        sexo: document.getElementById("sexo").value,
+        objetivo: document.getElementById("objetivo").value,
+        requisitos: document.getElementById("requisitos").value,
+    };
 }
 
 // Función para limpiar los campos del formulario

@@ -46,24 +46,7 @@ $rutinas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <h6 class="card-subtitle mb-2 text-muted">Rutina:</h6>
                                     <?php
                                         $rutina_text = $rutina['rutina'];
-                                        // Dividir la rutina por días
-                                        $dias = explode("Día", $rutina_text);
-                                        foreach ($dias as $dia) {
-                                            // Ignorar líneas vacías
-                                            if (!empty(trim($dia))) {
-                                                echo "<p><strong>Día $dia</strong></p>";
-                                                // Mostrar ejercicios del día
-                                                echo "<ul>";
-                                                $ejercicios = explode("-", $dia);
-                                                foreach ($ejercicios as $ejercicio) {
-                                                    // Ignorar líneas vacías
-                                                    if (!empty(trim($ejercicio))) {
-                                                        echo "<li>" . trim($ejercicio) . "</li>";
-                                                    }
-                                                }
-                                                echo "</ul>";
-                                            }
-                                        }
+                                        echo $rutina_text;
                                     ?>
                                 </div>
                             </div>

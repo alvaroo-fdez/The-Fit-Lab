@@ -9,7 +9,7 @@ $usuario_id = $_COOKIE['id'];
 $conexion = new Conexion();
 
 // Realizar la consulta para obtener las dietas del usuario actual
-$query = "SELECT * FROM dietas WHERE usuario_id = :usuario_id";
+$query = "SELECT * FROM dietas WHERE usuario_id = :usuario_id ORDER BY id DESC";
 $stmt = $conexion->prepare($query);
 $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
 $stmt->execute();

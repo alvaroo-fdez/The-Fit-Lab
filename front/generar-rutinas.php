@@ -64,6 +64,13 @@
                                         min="1" max="7" oninput="actualizarDiasSemana(this.value)" value="3">
                                 </div>
                                 <div class="form-group">
+                                    <label for="entorno">Sexo:</label>
+                                    <select class="form-control" id="sexo" name="sexo">
+                                        <option value="masculino">Masculino</option>
+                                        <option value="femenino">Femenino</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="entorno">Entorno de entrenamiento:</label>
                                     <select class="form-control" id="entorno" name="entorno">
                                         <option value="gimnasio">Gimnasio</option>

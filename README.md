@@ -130,6 +130,7 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
     `peso` int(11) DEFAULT NULL,
     `peso_deseado` int(11) DEFAULT NULL,
     `dias_semana` int(11) DEFAULT NULL,
+    `sexo` varchar(50) DEFAULT NULL,
     `entorno_entrenamiento` varchar(50) DEFAULT NULL,
     `objetivo` varchar(50) DEFAULT NULL,
     `rutina` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL
