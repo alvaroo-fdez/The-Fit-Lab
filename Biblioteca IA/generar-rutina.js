@@ -23,9 +23,6 @@ function generarRutina(event) {
 
         let formato = "<table>\
             <tr>\
-                <th colspan='" + (dias_semana + 1) + "'>Rutina</th>\
-            </tr>\
-            <tr>\
                 <td></td>";
 
         // Agregar días a la primera fila

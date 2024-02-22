@@ -24,9 +24,6 @@ function generarDieta(event) {
 
         let formato = "<table>\
         <tr>\
-          <th colspan='8'>Dieta</th>\
-        </tr>\
-        <tr>\
         <td></td>\
           <td>Lunes</td>\
           <td>Martes</td>\
@@ -38,43 +35,43 @@ function generarDieta(event) {
         </tr>\
         <tr>\
           <td>Desayuno</td>\
-          <td>(Desayuno Lunes)</td>\
-          <td>(Desayuno Martes)</td>\
-          <td>(Desayuno Miércoles)</td>\
-          <td>(Desayuno Jueves)</td>\
-          <td>(Desayuno Viernes)</td>\
-          <td>(Desayuno Sábado)</td>\
-          <td>(Desayuno Domingo)</td>\
+          <td>(Desayuno Lunes)(cantidad de comida)</td>\
+          <td>(Desayuno Martes)(cantidad de comida)</td>\
+          <td>(Desayuno Miércoles)(cantidad de comida)</td>\
+          <td>(Desayuno Jueves)(cantidad de comida)</td>\
+          <td>(Desayuno Viernes)(cantidad de comida)</td>\
+          <td>(Desayuno Sábado)(cantidad de comida)</td>\
+          <td>(Desayuno Domingo)(cantidad de comida)</td>\
         </tr>\
         <tr>\
           <td>Comida</td>\
-          <td>(Comida Lunes)</td>\
-          <td>(Comida Martes)</td>\
-          <td>(Comida Miércoles)</td>\
-          <td>(Comida Jueves)</td>\
-          <td>(Comida Viernes)</td>\
-          <td>(Comida Sábado)</td>\
-          <td>(Comida Domingo)</td>\
+          <td>(Comida Lunes)(cantidad de comida)</td>\
+          <td>(Comida Martes)(cantidad de comida)</td>\
+          <td>(Comida Miércoles)(cantidad de comida)</td>\
+          <td>(Comida Jueves)(cantidad de comida)</td>\
+          <td>(Comida Viernes)(cantidad de comida)</td>\
+          <td>(Comida Sábado)(cantidad de comida)</td>\
+          <td>(Comida Domingo)(cantidad de comida)</td>\
         </tr>\
         <tr>\
           <td>Merienda</td>\
-          <td>(Merienda Lunes)</td>\
-          <td>(Merienda Martes)</td>\
-          <td>(Merienda Miércoles)</td>\
-          <td>(Merienda Jueves)</td>\
-          <td>(Merienda Viernes)</td>\
-          <td>(Merienda Sábado)</td>\
-          <td>(Merienda Domingo)</td>\
+          <td>(Merienda Lunes)(cantidad de comida)</td>\
+          <td>(Merienda Martes)(cantidad de comida)</td>\
+          <td>(Merienda Miércoles)(cantidad de comida)</td>\
+          <td>(Merienda Jueves)(cantidad de comida)</td>\
+          <td>(Merienda Viernes)(cantidad de comida)</td>\
+          <td>(Merienda Sábado)(cantidad de comida)</td>\
+          <td>(Merienda Domingo)(cantidad de comida)</td>\
         </tr>\
         <tr>\
           <td>Cena</td>\
-          <td>(Cena Lunes)</td>\
-          <td>(Cena Martes)</td>\
-          <td>(Cena Miércoles)</td>\
-          <td>(Cena Jueves)</td>\
-          <td>(Cena Viernes)</td>\
-          <td>(Cena Sábado)</td>\
-          <td>(Cena Domingo)</td>\
+          <td>(Cena Lunes)(cantidad de comida)</td>\
+          <td>(Cena Martes)(cantidad de comida)</td>\
+          <td>(Cena Miércoles)(cantidad de comida)</td>\
+          <td>(Cena Jueves)(cantidad de comida)</td>\
+          <td>(Cena Viernes)(cantidad de comida)</td>\
+          <td>(Cena Sábado)(cantidad de comida)</td>\
+          <td>(Cena Domingo)(cantidad de comida)</td>\
         </tr>\
       </table>";
 
@@ -121,6 +118,8 @@ function generarDieta(event) {
 
                 // Muestra el modal
                 $('#rutinaModal').modal('show');
+
+                limpiarCampos();
 
                 // Habilita nuevamente el botón después de recibir la respuesta
                 btnGenerarDieta.disabled = false;
@@ -206,4 +205,16 @@ function guardarDieta() {
 
     // Cierra el modal después de guardar
     $('#rutinaModal').modal('hide');
+}
+
+// Función para limpiar los campos del formulario
+function limpiarCampos() {
+    document.getElementById('nivel').value = '';
+    document.getElementById('altura').value = '';
+    document.getElementById('peso').value = '';
+    document.getElementById('peso_deseado').value = '';
+    document.getElementById('edad').value = '';
+    document.getElementById('sexo').value = '';
+    document.getElementById('objetivo').value = '';
+    document.getElementById('requisitos').value = '';
 }

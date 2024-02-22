@@ -55,13 +55,11 @@
                         <label>Rutina</label>
                     </li>
                     <li class="nav-item">
-                        <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-file-text"></i></span><span class="pcoded-mtext">Mis
+                        <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-list"></i></span><span class="pcoded-mtext">Mis
                                 rutinas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-align-justify"></i></span><span class="pcoded-mtext">Generar
+                        <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-dumbbell"></i></span><span class="pcoded-mtext">Generar
                                 rutina</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
@@ -79,8 +77,7 @@
                         <label>Hacer ejercicios</label>
                     </li>
                     <li class="nav-item">
-                        <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-map"></i></span><span
+                        <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-stopwatch"></i></span><span
                                 class="pcoded-mtext">Ejercitarse</span></a>
                     </li>
 
