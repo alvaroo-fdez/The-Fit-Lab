@@ -8,6 +8,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
+    <style>
+        .card-deck-scrollable {
+            @extend .card-deck;
+            flex-direction: row;
+
+            &>.card {
+                @extend .mx-3;
+                flex: 0 0 40% !important;
+                /*Change to any size you want*/
+                max-width: 40%;
+            }
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body class="">
@@ -97,7 +115,6 @@
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <a href="#!" class="b-brand">
                 <img src="../assets/images/logo.png" alt="" class="logo">
-                <img src="../assets/images/logo-icon.png" alt="" class="logo-thumb">
             </a>
             <a href="#!" class="mob-toggler">
                 <i class="feather icon-more-vertical"></i>

@@ -1,0 +1,39 @@
+#modelo-editar-dialogo {
+    max-width: 85%;
+}
+
+#rutinaModalBody table, .card-body table{
+    border-collapse: collapse;
+    display: flex;
+    justify-content: center;
+}
+
+#rutinaModalBody table td, .card-body table td{
+    border-top: 1px solid #7ED956;
+    text-align: left;
+    padding: 8px;
+}
+
+#rutinaModalBody table tbody tr:first-child, .card-body table tbody tr:first-child{
+    border-top: 1px solid #7ED956;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #dbffcb;
+}
+
+#rutinaModalBody table tbody tr td:first-child, 
+.card-body table tbody tr td:first-child{
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
+#rutinaModalBody table tbody tr:nth-child(2),
+.card-body table tbody tr:nth-child(2){
+    text-align: center;
+}
+
+div:where(.swal2-container).swal2-center>.swal2-popup .swal2-actions button:where(.swal2-styled).swal2-confirm {
+    background-color: #7ED956;
+}
