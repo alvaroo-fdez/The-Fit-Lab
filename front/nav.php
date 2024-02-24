@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
+<<<<<<< HEAD
     <style>
         .card-deck-scrollable {
             @extend .card-deck;
@@ -26,6 +27,9 @@
             height: auto;
         }
     </style>
+=======
+    <link rel="stylesheet" href="../assets/css/modales.css">
+>>>>>>> b9d6d902beccfc3d591666b5a56e6b40e7972536
 </head>
 
 <body class="">
@@ -49,12 +53,8 @@
                     </div>
                     <div class="collapse" id="nav-user-link">
                         <ul class="list-unstyled">
-                            <!-- <li class="list-group-item"><a href="user-profile.html"><i
-                                        class="feather icon-user m-r-5"></i>View Profile</a></li>
-                            <li class="list-group-item"><a href="#!"><i
-                                        class="feather icon-settings m-r-5"></i>Settings</a></li> -->
                             <li class="list-group-item"><a href="auth-normal-sign-in.html"><i
-                                        class="feather icon-log-out m-r-5"></i>Logout</a></li>
+                                        class="feather icon-log-out m-r-5"></i>Cerrar sesión</a></li>
                         </ul>
                     </div>
                 </div>
@@ -72,34 +72,29 @@
                         <label>Rutina</label>
                     </li>
                     <li class="nav-item">
-                        <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-file-text"></i></span><span class="pcoded-mtext">Mis
+                        <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-list"></i></span><span class="pcoded-mtext">Mis
                                 rutinas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-align-justify"></i></span><span class="pcoded-mtext">Generar
+                        <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-dumbbell"></i></span><span class="pcoded-mtext">Generar
                                 rutina</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
                         <label>Dieta</label>
                     </li>
                     <li class="nav-item">
-                        <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-pie-chart"></i></span><span class="pcoded-mtext">Mis
+                        <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-list-ul"></i></span><span class="pcoded-mtext">Mis
                                 dietas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-map"></i></span><span class="pcoded-mtext">Generar
+                        <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-utensils"></i></span><span class="pcoded-mtext">Generar
                                 dieta</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
                         <label>Hacer ejercicios</label>
                     </li>
                     <li class="nav-item">
-                        <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-map"></i></span><span
+                        <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-stopwatch"></i></span><span
                                 class="pcoded-mtext">Ejercitarse</span></a>
                     </li>
 

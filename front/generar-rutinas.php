@@ -64,6 +64,13 @@
                                         min="1" max="7" oninput="actualizarDiasSemana(this.value)" value="3">
                                 </div>
                                 <div class="form-group">
+                                    <label for="entorno">Sexo:</label>
+                                    <select class="form-control" id="sexo" name="sexo">
+                                        <option value="masculino">Masculino</option>
+                                        <option value="femenino">Femenino</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="entorno">Entorno de entrenamiento:</label>
                                     <select class="form-control" id="entorno" name="entorno">
                                         <option value="gimnasio">Gimnasio</option>
@@ -95,7 +102,7 @@
 <!-- Modal -->
 <div class="modal fade" id="rutinaModal" tabindex="-1" role="dialog" aria-labelledby="rutinaModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" id="modelo-editar-dialogo">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rutinaModalLabel">Rutina Generada</h5>

@@ -15,11 +15,42 @@ function generarRutina(event) {
         var altura = document.getElementById("altura").value;
         var peso = document.getElementById("peso").value;
         var peso_deseado = document.getElementById("peso_deseado").value;
-        var dias_semana = document.getElementById("dias_semana").value;
+        var dias_semana = parseInt(document.getElementById("dias_semana").value);
         var entorno = document.getElementById("entorno").value;
         var objetivo = document.getElementById("objetivo").value;
+        var sexo = document.getElementById("sexo").value;
 
-        formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
+        //formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
+
+        // Construir la estructura HTML según los días seleccionados
+        let formato = "<table>\
+        <tbody>\
+            <tr>\
+                <td></td>";
+
+        // Agregar días a la primera fila
+        for (var i = 0; i < parseInt(dias_semana); i++) {
+            formato += "<td>Día " + (i + 1) + "</td>";
+        }
+
+        formato += "</tr>";
+
+        // Agregar filas para cada ejercicio
+        for (var i = 1; i <= 5; i++) {
+            formato += "<tr>\
+        <td>Ejercicio " + i + "</td>";
+
+            // Agregar celdas para cada día
+            for (var j = 0; j < parseInt(dias_semana); j++) {
+                formato += "<td>(Día " + (j + 1) + " Ejercicio " + i + ")</td>";
+            }
+
+            formato += "</tr>";
+        }
+
+        formato += "</tbody></table>";
+
+       // console.log(formato);
 
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
@@ -30,8 +61,8 @@ function generarRutina(event) {
         var data = {
             model: 'gpt-3.5-turbo',
             messages: [
-                { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una rutina adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
-                { role: 'user', content: 'Genera una rutina de entrenamiento para un usuario con nivel: ' + nivel + ', altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ' kg, entrenando ' + dias_semana + ' días a la semana, en entorno de ' + entorno + ' y con objetivo ' + objetivo + '.' },
+                { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una rutina idónea, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
+                { role: 'user', content: 'Genera una rutina de entrenamiento para un usuario de sexo: ' + sexo + ', nivel: ' + nivel + ' altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ' kg, entrenando ' + dias_semana + ' días a la semana, en entorno de ' + entorno + ' y con objetivo ' + objetivo + '.  Incluye ejercicios para los principales grupos musculares (por ejemplo, pecho, espalda, piernas, etc.) y especifica el número de series y repeticiones para cada ejercicio.' },
             ]
         };
 
@@ -44,15 +75,6 @@ function generarRutina(event) {
             .then(result => {
                 var respuestaGenerada = result.choices[0].message.content;
                 console.log(respuestaGenerada);
-
-                // Reemplaza las líneas nuevas con un solo <br>
-                respuestaGenerada = respuestaGenerada.replace(/\n+/g, '<br>');
-
-                // Agrega títulos para los días
-                respuestaGenerada = respuestaGenerada.replace(/Día (\d+):/g, '<br><strong>Día $1:</strong>');
-
-                // Elimina <br> al principio y al final de la cadena si los hay
-                respuestaGenerada = respuestaGenerada.replace(/^<br>/, '').replace(/<br>$/, '');
 
                 // Actualiza el contenido del modal
                 var rutinaModalBody = document.getElementById('rutinaModalBody');
@@ -78,9 +100,10 @@ function guardarRutina() {
     var dias_semana = document.getElementById("dias_semana").value;
     var entorno = document.getElementById("entorno").value;
     var objetivo = document.getElementById("objetivo").value;
+    var sexo = document.getElementById("sexo").value;
 
     // Obtén la rutina del modal
-    var rutina = document.getElementById('rutinaModalBody').textContent;
+    var rutina = document.getElementById('rutinaModalBody').innerHTML;
     var tituloRutinaInput = document.getElementById('tituloRutina');
     var tituloRutina = tituloRutinaInput.value;
 
@@ -93,7 +116,7 @@ function guardarRutina() {
     } else {
         // Limpia el mensaje de error y restablece el borde del input
         document.getElementById('errorTitulo').textContent = '';
-        tituloRutinaInput.style.borderColor = ''; // Dejar que el navegador maneje el estilo del borde
+        tituloRutinaInput.style.borderColor = '';
     }
 
     // Construye un objeto con los datos a enviar
@@ -103,6 +126,7 @@ function guardarRutina() {
         peso: peso,
         peso_deseado: peso_deseado,
         dias_semana: dias_semana,
+        sexo: sexo,
         entorno: entorno,
         objetivo: objetivo,
         titulo: tituloRutina,
@@ -128,6 +152,8 @@ function guardarRutina() {
                 text: 'Título: ' + data.titulo,
             });
 
+            limpiarCampos();
+
             // Cierra el modal después de guardar
             $('#rutinaModal').modal('hide');
         })
@@ -143,4 +169,16 @@ function guardarRutina() {
 
     // Cierra el modal después de guardar
     $('#rutinaModal').modal('hide');
+}
+
+// Función para limpiar los campos del formulario
+function limpiarCampos() {
+    document.getElementById('nivel').value = '';
+    document.getElementById('altura').value = '';
+    document.getElementById('peso').value = '';
+    document.getElementById('peso_deseado').value = '';
+    document.getElementById('edad').value = '';
+    document.getElementById('sexo').value = '';
+    document.getElementById('objetivo').value = '';
+    document.getElementById('requisitos').value = '';
 }

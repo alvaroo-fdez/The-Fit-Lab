@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Asignar un evento al formulario cuando se envía
-    document.querySelector('#dietaForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+    // Asignar un evento al botón de enviar
+    document.querySelector('#btnGenerarDieta').addEventListener('click', function (event) {
         // Validar cada campo antes de enviar el formulario
         var nivel = document.getElementById('nivel').value;
         var altura = document.getElementById('altura').value;
@@ -47,17 +46,15 @@ document.addEventListener("DOMContentLoaded", function () {
             formIsValid = false;
         }
 
-
         // Detener el envío del formulario si hay campos vacíos
         if (!formIsValid) {
             event.preventDefault();
-        } 
-        // else {
-        //     // Lógica adicional para procesar la generación de la dieta
-        //     generarDieta(nivel, altura, peso, pesoDeseado, edad, sexo, objetivo, requisitos);
-        // }
+        }else{
+            //limpiarCampos();
+        }
     });
 });
+
 
 // Función para establecer un mensaje de error y cambiar el estilo del campo
 function setError(id, message) {

@@ -1,22 +1,24 @@
 <?php
-// guardar_rutina.php
+require_once 'Conexion.php';
 // Recibe los datos enviados por la solicitud AJAX
 $data = json_decode(file_get_contents("php://input"));
-// Configuración de la conexión a la base de datos (ajusta los valores según tu entorno)
+
+// Configuración de la conexión a la base de datos 
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "the fit lab";
+
 try {
-    // Crear una nueva conexión PDO
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // Creamos una nueva conexión PDO
+    $conn = new Conexion();
     
-    // Establecer el modo de error PDO a excepción
+    // Establecemos el modo de error PDO a excepción
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Preparar la consulta SQL para la inserción de la rutina
-    $stmt = $conn->prepare("INSERT INTO rutinas (usuario_id, titulo, nivel, altura, peso, peso_deseado, dias_semana, entorno_entrenamiento, objetivo, rutina) 
-                            VALUES (:usuario_id, :titulo, :nivel, :altura, :peso, :peso_deseado, :dias_semana, :entorno_entrenamiento, :objetivo, :rutina)");
+    // Preparamos la consulta SQL para la inserción de la rutina
+    $stmt = $conn->prepare("INSERT INTO rutinas (usuario_id, titulo, nivel, altura, peso, peso_deseado, dias_semana, sexo, entorno_entrenamiento, objetivo, rutina) 
+                            VALUES (:usuario_id, :titulo, :nivel, :altura, :peso, :peso_deseado, :dias_semana, :sexo, :entorno_entrenamiento, :objetivo, :rutina)");
 
     // Bind de los parámetros
     $stmt->bindParam(':usuario_id', $_COOKIE['id']);
@@ -26,26 +28,32 @@ try {
     $stmt->bindParam(':peso', $data->peso);
     $stmt->bindParam(':peso_deseado', $data->peso_deseado);
     $stmt->bindParam(':dias_semana', $data->dias_semana);
+    $stmt->bindParam(':sexo', $data->sexo);
     $stmt->bindParam(':entorno_entrenamiento', $data->entorno);
     $stmt->bindParam(':objetivo', $data->objetivo);
     $stmt->bindParam(':rutina', $data->rutina);
 
-    // Ejecutar la consulta
+    // Ejecutamos la consulta
     $stmt->execute();
-    // Obtener el ID de la nueva rutina insertada
+
+    // Obtenemos el ID de la nueva rutina insertada
     $rutina_id = $conn->lastInsertId();
-    // Construir una respuesta de éxito
+
+    // Construimos una respuesta exitosa
     $response = array('titulo' => $data->titulo, 'mensaje' => 'Rutina guardada con éxito.', 'rutina_id' => $rutina_id);
-    // Enviar la respuesta al cliente
+
+    // Enviamos la respuesta al cliente
     header('Content-Type: application/json');
     echo json_encode($response);
 }catch(PDOException $e) {
-    // Manejar errores de la conexión o de la consulta
+    // Manejo errores de la conexión o de la consulta
     $response = array('error' => 'Error al guardar la rutina: ' . $e->getMessage());
-    // Enviar la respuesta de error al cliente
+
+    // Enviamos la respuesta de error al cliente
     header('Content-Type: application/json', true, 500);
     echo json_encode($response);
 }
-// Cerrar la conexión
+
+// Cierre de conexión
 $conn = null;
 ?>
