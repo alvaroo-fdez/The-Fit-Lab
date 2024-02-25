@@ -82,6 +82,7 @@ class Usuario{
                 setcookie('id', $id, time()+3600*24*365*100, '/');
     
                 header("Location: ../front/chat.php");
+                exit;
             }
             
         }else{
