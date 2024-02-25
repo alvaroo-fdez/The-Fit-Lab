@@ -1,15 +1,28 @@
 <?php
-if (isset($_GET['id'])) {
-    $dietaId = $_GET['id'];
+require_once('../back/Conexion.php');
+$data = json_decode(file_get_contents("php://input"));
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+    // Obtener el ID de la dieta desde la solicitud
+    $dietaId = $_POST['dietaId'];
 
-    // Realizar la eliminación en la base de datos usando el ID de la dieta
-    $query = "DELETE FROM dietas WHERE id = :dieta_id";
+    // Crear una instancia de la clase Conexion
+    $conexion = new Conexion();
+
+    // Realizar la eliminación en la base de datos
+    $query = "DELETE FROM dietas WHERE id = :dietaId";
     $stmt = $conexion->prepare($query);
-    $stmt->bindParam(':dieta_id', $dietaId, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Redirige a la página principal después de la eliminación
-    header('Location: principal.php');
-    exit();
+    $stmt->bindParam(':dietaId', $dietaId, PDO::PARAM_INT);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['mensaje' => 'Dieta eliminada con éxito']);
+    } else {
+        echo json_encode(['error' => 'Error al eliminar la dieta'. $e->getMessage()]);
+    }
+} catch (Exception $e) {
+    echo json_encode(['error' => 'Error al eliminar la dieta: ' . $e->getMessage()]);
+}
+} else {
+    echo json_encode(['error' => 'Método de solicitud no permitido']);
 }
 ?>

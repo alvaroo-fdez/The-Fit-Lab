@@ -8,7 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
-<<<<<<< HEAD
     <style>
         .card-deck-scrollable {
             @extend .card-deck;
@@ -26,10 +25,18 @@
             width: 100%;
             height: auto;
         }
+
+        ::selection {
+            background-color: #7ED956; /* Color de fondo de la selección */
+            color: #fff; /* Color del texto seleccionado */
+        }
+
+        ::-moz-selection {
+            background-color: #7ED956;
+            color: #fff;
+        }
     </style>
-=======
     <link rel="stylesheet" href="../assets/css/modales.css">
->>>>>>> b9d6d902beccfc3d591666b5a56e6b40e7972536
 </head>
 
 <body class="">

@@ -111,7 +111,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarDieta()">Guardar Dieta</button>
+                <button type="button" class="btn btn-primary" onclick="guardarDieta()" id="btnGuardarDieta">Guardar Dieta</button>
             </div>
         </div>
     </div>

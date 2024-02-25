@@ -1,136 +1,39 @@
-// Función para generar una dieta al hacer clic en el botón correspondiente
 function generarDieta(event) {
-    event.preventDefault(); // Evita el comportamiento predeterminado del formulario
+    event.preventDefault();
 
-    // Obtiene la clave de la API antes de continuar
     obtenerApiKey().then(() => {
-        // Deshabilita el botón y muestra un indicador de carga
-        var btnGenerarDieta = document.getElementById('btnGenerarDieta');
-        btnGenerarDieta.disabled = true;
-        btnGenerarDieta.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+        deshabilitarBotonGenerarDieta();
 
-        // Obtiene los datos del usuario desde el formulario
         var datosUsuario = obtenerDatosUsuario();
+        var formato = construirFormatoDieta();
 
-        // Construye el formato de la dieta para incluirlo en la solicitud a la API
-        let formato = construirFormatoDieta();
-
-        // URL y encabezados para la solicitud a la API de OpenAI
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
-        var headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + apiKey
-        };
+        var headers = construirHeaders();
+        var data = construirDataDieta(datosUsuario, formato);
 
-        // Datos para la solicitud a la API
-        var data = {
-            model: 'gpt-3.5-turbo',
-            messages: [
-                { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una dieta adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
-                { role: 'user', content: 'Genera una dieta para un usuario de sexo ' + datosUsuario.sexo + ', con nivel: ' + datosUsuario.nivel + ', altura: ' + datosUsuario.altura + ' cm, peso: ' + datosUsuario.peso + ' kg, peso deseado: ' + datosUsuario.peso_deseado + ', con: ' + datosUsuario.edad + ' años, con el objetivo ' + datosUsuario.objetivo + ' y con los siguientes requisitos personales (si los hay): ' + datosUsuario.requisitos + '.' },
-            ]
-        };
-
-        // Realiza la solicitud a la API utilizando fetch
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
+        realizarPeticionApi(apiUrl, headers, data)
             .then(result => {
-                // Obtiene la respuesta generada por el modelo
                 var respuestaGenerada = result.choices[0].message.content;
-                console.log(respuestaGenerada);
-
-                // Actualiza el contenido del modal con la respuesta generada
-                var rutinaModalBody = document.getElementById('rutinaModalBody');
-                rutinaModalBody.innerHTML = respuestaGenerada;
-
-                // Muestra el modal con la respuesta generada
-                $('#rutinaModal').modal('show');
-
-                // Habilita nuevamente el botón después de recibir la respuesta
-                btnGenerarDieta.disabled = false;
-                btnGenerarDieta.innerHTML = 'Generar Dieta';
+                mostrarDietaEnModal(respuestaGenerada);
+                habilitarBotonGenerarDieta();
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                habilitarBotonGenerarDieta();
+            });
     });
 }
 
-// Función para guardar la dieta generada
-function guardarDieta() {
-    // Obtiene los datos del usuario desde el formulario
-    var datosUsuario = obtenerDatosUsuario();
+function deshabilitarBotonGenerarDieta() {
+    var btnGenerarDieta = document.getElementById('btnGenerarDieta');
+    btnGenerarDieta.disabled = true;
+    btnGenerarDieta.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+}
 
-    // Obtiene la dieta generada del modal
-    var dieta = document.getElementById('rutinaModalBody').innerHTML;
-    var tituloRutinaInput = document.getElementById('tituloRutina');
-    var tituloRutina = tituloRutinaInput.value;
-
-    // Verifica si el título está vacío
-    if (tituloRutina.trim() === "") {
-        // Muestra el mensaje de error y resalta el borde del input
-        document.getElementById('errorTitulo').textContent = 'Por favor, ingresa un título para la dieta.';
-        tituloRutinaInput.style.borderColor = 'red';
-        return;
-    } else {
-        // Limpia el mensaje de error y restablece el borde del input
-        document.getElementById('errorTitulo').textContent = '';
-        tituloRutinaInput.style.borderColor = ''; // Dejar que el navegador maneje el estilo del borde
-    }
-
-    // Construye un objeto con los datos a enviar al servidor
-    var data = {
-        nivel: datosUsuario.nivel,
-        altura: datosUsuario.altura,
-        peso: datosUsuario.peso,
-        peso_deseado: datosUsuario.peso_deseado,
-        edad: datosUsuario.edad,
-        sexo: datosUsuario.sexo,
-        objetivo: datosUsuario.objetivo,
-        titulo: tituloRutina,
-        requisitos: datosUsuario.requisitos,
-        dieta: dieta
-    };
-
-    // Envía la dieta y los datos al servidor PHP para su inserción
-    fetch('../back/guardar_dieta.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Dieta guardada:', data);
-
-            // Muestra un mensaje de éxito con SweetAlert
-            Swal.fire({
-                icon: 'success',
-                title: 'Dieta guardada con éxito',
-                text: 'Título: ' + tituloRutina,
-            });
-
-            // Limpia los campos del formulario
-            limpiarCampos();
-
-            // Cierra el modal después de guardar
-            $('#rutinaModal').modal('hide');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Muestra un mensaje de error con SweetAlert si hay un problema
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Hubo un problema al guardar la dieta. Por favor, inténtalo de nuevo.',
-            });
-        });
-
-    // Cierra el modal después de guardar
-    $('#rutinaModal').modal('hide');
+function habilitarBotonGenerarDieta() {
+    var btnGenerarDieta = document.getElementById('btnGenerarDieta');
+    btnGenerarDieta.disabled = false;
+    btnGenerarDieta.innerHTML = 'Generar Dieta';
 }
 
 // Función para construir el formato de la dieta en HTML
@@ -190,6 +93,133 @@ function construirFormatoDieta() {
     return formatoDieta;
 }
 
+function construirHeaders() {
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+    };
+}
+
+function construirDataDieta(datosUsuario, formato) {
+    return {
+        model: 'gpt-3.5-turbo',
+        messages: [
+            { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una dieta adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
+            { role: 'user', content: 'Genera una dieta para un usuario de sexo ' + datosUsuario.sexo + ', con nivel: ' + datosUsuario.nivel + ', altura: ' + datosUsuario.altura + ' cm, peso: ' + datosUsuario.peso + ' kg, peso deseado: ' + datosUsuario.peso_deseado + ', con: ' + datosUsuario.edad + ' años, con el objetivo ' + datosUsuario.objetivo + ' y con los siguientes requisitos personales (si los hay): ' + datosUsuario.requisitos + '.' },
+        ]
+    };
+}
+
+async function realizarPeticionApi(apiUrl, headers, data) {
+    return fetch(apiUrl, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json());
+}
+
+function mostrarDietaEnModal(respuestaGenerada) {
+    var rutinaModalBody = document.getElementById('rutinaModalBody');
+    rutinaModalBody.innerHTML = respuestaGenerada;
+
+    $('#rutinaModal').modal('show');
+}
+
+// Función para guardar la dieta generada
+function guardarDieta() {
+    var data;
+    var datosUsuario = obtenerDatosUsuario();
+    var tituloRutinaInput = document.getElementById('tituloRutina');
+    var tituloRutina = tituloRutinaInput.value;
+    var respuestamodal = document.getElementById('rutinaModalBody').innerHTML
+
+    if (respuestamodal.includes('<table>')) {
+        // Extraer el contenido de la tabla
+        var inicioTabla = respuestamodal.indexOf('<table>');
+        var finTabla = respuestamodal.indexOf('</table>') + '</table>'.length;
+        var contenidoTabla = respuestamodal.substring(inicioTabla, finTabla);
+
+        // Construir los datos para enviar al servidor
+        if (validarTituloRutina(tituloRutina)) {
+            data = construirDatosEnvioServerDieta(datosUsuario, tituloRutina, contenidoTabla);
+
+            enviarDietaAlServidor(data);
+        }
+
+    } else {
+        // Si no hay una etiqueta <table>, puedes deshabilitar el botón o manejarlo de otra manera
+        return;
+    }
+}
+
+function validarTituloRutina(tituloRutina) {
+    var tituloRutinaInput = document.getElementById('tituloRutina');
+    if (tituloRutina.trim() === "") {
+        document.getElementById('errorTitulo').textContent = 'Por favor, ingresa un título para la dieta.';
+        tituloRutinaInput.style.borderColor = 'red';
+        return false;
+    } else {
+        document.getElementById('errorTitulo').textContent = '';
+        tituloRutinaInput.style.borderColor = '';
+        return true;
+    }
+}
+
+function construirDatosEnvioServerDieta(datosUsuario, tituloRutina, contenidoTabla) {
+    return {
+        nivel: datosUsuario.nivel,
+        altura: datosUsuario.altura,
+        peso: datosUsuario.peso,
+        peso_deseado: datosUsuario.peso_deseado,
+        edad: datosUsuario.edad,
+        sexo: datosUsuario.sexo,
+        objetivo: datosUsuario.objetivo,
+        titulo: tituloRutina,
+        requisitos: datosUsuario.requisitos,
+        dieta: contenidoTabla
+    };
+}
+
+function enviarDietaAlServidor(data) {
+    fetch('../back/guardar_dieta.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Dieta guardada:', data);
+            mostrarMensajeExito();
+            limpiarCampos();
+            $('#rutinaModal').modal('hide');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensajeError();
+        });
+}
+
+function mostrarMensajeExito() {
+    Swal.fire({
+        icon: 'success',
+        title: 'Dieta guardada con éxito',
+        text: 'Título: ' + document.getElementById('tituloRutina').value,
+    });
+    var tituloRutinaInput = document.getElementById('tituloRutina');
+    tituloRutinaInput.value = '';
+}
+
+function mostrarMensajeError() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un problema al guardar la dieta. Por favor, inténtalo de nuevo.',
+    });
+}
+
 // Función para obtener los datos del usuario desde el formulario
 function obtenerDatosUsuario() {
     return {
@@ -206,12 +236,12 @@ function obtenerDatosUsuario() {
 
 // Función para limpiar los campos del formulario
 function limpiarCampos() {
-    document.getElementById('nivel').value = '';
-    document.getElementById('altura').value = '';
-    document.getElementById('peso').value = '';
-    document.getElementById('peso_deseado').value = '';
-    document.getElementById('edad').value = '';
-    document.getElementById('sexo').value = '';
-    document.getElementById('objetivo').value = '';
-    document.getElementById('requisitos').value = '';
+    var elementos = ['nivel', 'altura', 'peso', 'peso_deseado', 'edad', 'sexo', 'objetivo', 'requisitos'];
+
+    elementos.forEach(function (elementoId) {
+        var elemento = document.getElementById(elementoId);
+        if (elemento) {
+            elemento.value = '';
+        }
+    });
 }

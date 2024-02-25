@@ -37,3 +37,8 @@
 div:where(.swal2-container).swal2-center>.swal2-popup .swal2-actions button:where(.swal2-styled).swal2-confirm {
     background-color: #7ED956;
 }
+
+body::selection {
+    background-color: #7ED956; /* Color de fondo de la selección */
+    color: #fff; /* Color del texto seleccionado */
+}
