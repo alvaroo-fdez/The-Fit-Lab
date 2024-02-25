@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-<?php session_start(); ?>
+<?php
+ session_start();
+ if(!isset($_COOKIE['id']) || !isset($_COOKIE['nombre']) || !isset($_COOKIE['correo'])){
+    header("Location: ../index.php");
+ }
+ ?>
+
 <head>
     <title>The Fit Lab</title>
     <meta charset="utf-8">
@@ -9,32 +15,34 @@
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
     <style>
-        .card-deck-scrollable {
-            @extend .card-deck;
-            flex-direction: row;
+    .card-deck-scrollable {
+        @extend .card-deck;
+        flex-direction: row;
 
-            &>.card {
-                @extend .mx-3;
-                flex: 0 0 40% !important;
-                /*Change to any size you want*/
-                max-width: 40%;
-            }
+        &>.card {
+            @extend .mx-3;
+            flex: 0 0 40% !important;
+            /*Change to any size you want*/
+            max-width: 40%;
         }
-        
-        video {
-            width: 100%;
-            height: auto;
-        }
+    }
 
-        ::selection {
-            background-color: #7ED956; /* Color de fondo de la selección */
-            color: #fff; /* Color del texto seleccionado */
-        }
+    video {
+        width: 100%;
+        height: auto;
+    }
 
-        ::-moz-selection {
-            background-color: #7ED956;
-            color: #fff;
-        }
+    ::selection {
+        background-color: #7ED956;
+        /* Color de fondo de la selección */
+        color: #fff;
+        /* Color del texto seleccionado */
+    }
+
+    ::-moz-selection {
+        background-color: #7ED956;
+        color: #fff;
+    }
     </style>
     <link rel="stylesheet" href="../assets/css/modales.css">
 </head>
@@ -60,10 +68,15 @@
                     </div>
                     <div class="collapse" id="nav-user-link">
                         <ul class="list-unstyled">
-                            <li class="list-group-item"><a href="auth-normal-sign-in.html"><i
-                                        class="feather icon-log-out m-r-5"></i>Cerrar sesión</a></li>
+                            <li class="list-group-item">
+                                <!-- Enlace estilizado como botón para cerrar sesión -->
+                                <a href="#" id="logoutLink" onclick="cerrarSesion()">
+                                    <i class="feather icon-log-out m-r-5"></i>Cerrar sesión
+                                </a>
+                            </li>
                         </ul>
                     </div>
+
                 </div>
 
                 <ul class="nav pcoded-inner-navbar ">
@@ -79,29 +92,34 @@
                         <label>Rutina</label>
                     </li>
                     <li class="nav-item">
-                        <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-list"></i></span><span class="pcoded-mtext">Mis
+                        <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i
+                                    class="fas fa-list"></i></span><span class="pcoded-mtext">Mis
                                 rutinas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-dumbbell"></i></span><span class="pcoded-mtext">Generar
+                        <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i
+                                    class="fas fa-dumbbell"></i></span><span class="pcoded-mtext">Generar
                                 rutina</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
                         <label>Dieta</label>
                     </li>
                     <li class="nav-item">
-                        <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-list-ul"></i></span><span class="pcoded-mtext">Mis
+                        <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i
+                                    class="fas fa-list-ul"></i></span><span class="pcoded-mtext">Mis
                                 dietas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-utensils"></i></span><span class="pcoded-mtext">Generar
+                        <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i
+                                    class="fas fa-utensils"></i></span><span class="pcoded-mtext">Generar
                                 dieta</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
                         <label>Hacer ejercicios</label>
                     </li>
                     <li class="nav-item">
-                        <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i class="fas fa-stopwatch"></i></span><span
+                        <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i
+                                    class="fas fa-stopwatch"></i></span><span
                                 class="pcoded-mtext">Ejercitarse</span></a>
                     </li>
 

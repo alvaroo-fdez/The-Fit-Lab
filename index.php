@@ -15,6 +15,11 @@
 <?php
 	require_once './back/Conexion.php';
 	require_once './back/Usuario.php';
+
+    if(isset($_COOKIE['id']) || isset($_COOKIE['nombre']) || isset($_COOKIE['correo'])){
+        header("Location: ./front/chat.php");
+    }
+
 ?>
 
 <body>
