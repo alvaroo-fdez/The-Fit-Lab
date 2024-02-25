@@ -100,7 +100,7 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
 - Crea las siguientes tablas en tu base de datos MySQL.
   ```sql
   CREATE TABLE `dietas` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `usuario_id` int(11) DEFAULT NULL,
     `titulo` varchar(255) NOT NULL,
     `nivel` varchar(255) NOT NULL,
@@ -115,15 +115,15 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
   );
   
   CREATE TABLE `usuarios` (
-    `id` int(11) UNSIGNED NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `nombre` varchar(255) NOT NULL,
     `correo` varchar(255) NOT NULL,
     `contraseña` varchar(255) NOT NULL
   );
   
   CREATE TABLE `rutinas` (
-    `id` int(11) NOT NULL,
-    `usuario_id` int(11) DEFAULT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `usuario_id` int(11) DEFAULT NULL ,
     `titulo` varchar(255) DEFAULT NULL,
     `nivel` varchar(50) DEFAULT NULL,
     `altura` int(11) DEFAULT NULL,
