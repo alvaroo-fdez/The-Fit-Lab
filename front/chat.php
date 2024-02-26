@@ -8,6 +8,9 @@
                 <!-- Resto del código del encabezado -->
             </div>
             <div class="card-body" id="chat-container" style="max-height: 400px; overflow-y: auto">
+                <div id="loading-gif" style="display: none; text-align: center;">
+                    <img src="../assets/images/loading_chat.gif" alt="Cargando..." style="width: 50px; height: 50px;">
+                </div>
                 <!-- Contenedor de mensajes -->
             </div>
             <div class="input-group m-t-15"

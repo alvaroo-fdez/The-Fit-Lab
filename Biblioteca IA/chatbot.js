@@ -15,14 +15,25 @@ function sendMessage() {
     }
 }
 
+// Función para formatear el texto de respuesta
+function formatResponseText(response) {
+    // Reemplazar los saltos de línea específicos de OpenAI con etiquetas <br>
+    response = response.replace(/\n/g, '<br>');
+    return response;
+}
+
 function appendMessage(className, message) {
     // Crea un nuevo elemento de mensaje
     var messageElement = document.createElement('div');
     messageElement.className = 'row m-b-20 ' + className;
+
+    // Formatea el mensaje antes de insertarlo
+    var formattedMessage = formatResponseText(message);
+
     messageElement.innerHTML = `
         <div class="col">
             <div class="msg">
-                <p class="m-b-0">${message}</p>
+                <p class="m-b-0">${formattedMessage}</p>
             </div>
             <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>${getCurrentTime()}</p>
         </div>
@@ -33,6 +44,9 @@ function appendMessage(className, message) {
 }
 
 function generateGptResponse(userMessage) {
+    // Mostrar el GIF de carga
+    document.getElementById('loading-gif').style.display = 'block';
+
     obtenerApiKey().then(() => {
         // Lógica para llamar a la API de OpenAI y manejar la respuesta
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -60,9 +74,14 @@ function generateGptResponse(userMessage) {
                 // Añade la respuesta del asistente al contenedor de chat
                 appendMessage('received-chat', assistantResponse);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                // Ocultar el GIF de carga después de obtener la respuesta
+                document.getElementById('loading-gif').style.display = 'none';
+            });
     });
 }
+
 
 function getCurrentTime() {
     // Obtiene la hora actual en el formato hh:mm
