@@ -1,179 +1,115 @@
-// Función principal que se ejecuta al intentar generar una rutina
 function generarRutina(event) {
     event.preventDefault();
 
-    // Se obtiene la API key antes de realizar la petición
-    obtenerApiKey()
-        .then(() => {
-            deshabilitarBotonGenerarRutina();
+    obtenerApiKey().then(() => {
+        // Una vez que se haya obtenido la API key, podemos usarla
+        //console.log(apiKey);
 
-            // Se obtienen los datos del usuario
-            var datosUsuario = obtenerDatosUsuario();
-            // Se construye un formato HTML para mostrar la rutina
-            var formato = construirFormatoHTML(datosUsuario.dias_semana);
+        // Aquí puedes continuar con el resto de tu código que depende de la API key.
+        // Deshabilita el botón y muestra un indicador de carga
+        var btnGenerarRutina = document.getElementById('btnGenerarRutina');
+        btnGenerarRutina.disabled = true;
+        btnGenerarRutina.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+        // Recoge los valores de los campos del formulario
+        var nivel = document.getElementById("nivel").value;
+        var altura = document.getElementById("altura").value;
+        var peso = document.getElementById("peso").value;
+        var peso_deseado = document.getElementById("peso_deseado").value;
+        var dias_semana = document.getElementById("dias_semana").value;
+        var entorno = document.getElementById("entorno").value;
+        var objetivo = document.getElementById("objetivo").value;
 
-            var apiUrl = 'https://api.openai.com/v1/chat/completions';
-            var headers = construirHeaders();
-            var data = construirData(datosUsuario, formato);
+        formato = 'Peso inicial: (peso), peso deseado: (peso deseado), con el objetivo: (objetivo) y entrenando desde: (entorno de entrenamiento). <br> Día (número de día correspondiente) (todos los ejercicios variados que deba realizar el usuario con el siguiente formato): (numero de repeticiones) x (número de series) <br> (incluyendo también los <br>)'
 
-            // Se realiza la petición a la API de OpenAI
-            realizarPeticionApi(apiUrl, headers, data)
-                .then(result => {
-                    // Se extrae la respuesta generada por la API
-                    var respuestaGenerada = result.choices[0].message.content;
-                    // Se muestra la rutina en un modal
-                    mostrarRutinaEnModal(respuestaGenerada);
+        var apiUrl = 'https://api.openai.com/v1/chat/completions';
+        var headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey
+        };
 
-                    habilitarBotonGenerarRutina();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    habilitarBotonGenerarRutina();
-                });
-        });
+        var data = {
+            model: 'gpt-3.5-turbo',
+            messages: [
+                { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una rutina adecuada, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
+                { role: 'user', content: 'Genera una rutina de entrenamiento para un usuario con nivel: ' + nivel + ', altura: ' + altura + ' cm, peso: ' + peso + ' kg, peso deseado: ' + peso_deseado + ' kg, entrenando ' + dias_semana + ' días a la semana, en entorno de ' + entorno + ' y con objetivo ' + objetivo + '.' },
+            ]
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                var respuestaGenerada = result.choices[0].message.content;
+                console.log(respuestaGenerada);
+
+                // Reemplaza las líneas nuevas con un solo <br>
+                respuestaGenerada = respuestaGenerada.replace(/\n+/g, '<br>');
+
+                // Agrega títulos para los días
+                respuestaGenerada = respuestaGenerada.replace(/Día (\d+):/g, '<br><strong>Día $1:</strong>');
+
+                // Elimina <br> al principio y al final de la cadena si los hay
+                respuestaGenerada = respuestaGenerada.replace(/^<br>/, '').replace(/<br>$/, '');
+
+                // Actualiza el contenido del modal
+                var rutinaModalBody = document.getElementById('rutinaModalBody');
+                rutinaModalBody.innerHTML = respuestaGenerada;
+
+                // Muestra el modal
+                $('#rutinaModal').modal('show');
+
+                // Habilita nuevamente el botón después de recibir la respuesta
+                btnGenerarRutina.disabled = false;
+                btnGenerarRutina.innerHTML = 'Generar Rutina';
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
 }
 
-// Función para deshabilitar el botón de generar rutina
-function deshabilitarBotonGenerarRutina() {
-    var btnGenerarRutina = document.getElementById('btnGenerarRutina');
-    btnGenerarRutina.disabled = true;
-    btnGenerarRutina.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
-}
-
-// Función para habilitar el botón de generar rutina
-function habilitarBotonGenerarRutina() {
-    var btnGenerarRutina = document.getElementById('btnGenerarRutina');
-    btnGenerarRutina.disabled = false;
-    btnGenerarRutina.innerHTML = 'Generar Rutina';
-}
-
-// Función para obtener los datos del usuario desde el formulario
-function obtenerDatosUsuario() {
-    return {
-        nivel: document.getElementById("nivel").value,
-        altura: document.getElementById("altura").value,
-        peso: document.getElementById("peso").value,
-        peso_deseado: document.getElementById("peso_deseado").value,
-        dias_semana: parseInt(document.getElementById("dias_semana").value),
-        entorno: document.getElementById("entorno").value,
-        objetivo: document.getElementById("objetivo").value,
-        sexo: document.getElementById("sexo").value
-    };
-}
-
-// Función para construir el formato HTML de la tabla de la rutina
-function construirFormatoHTML(dias_semana) {
-    let formato = "<table>\
-        <tbody>\
-            <tr>\
-                <td></td>";
-
-    // Agregar días a la primera fila
-    for (var i = 0; i < parseInt(dias_semana); i++) {
-        formato += "<td>Día " + (i + 1) + "</td>";
-    }
-
-    formato += "</tr>";
-
-    // Agregar filas para cada ejercicio
-    for (var i = 1; i <= 5; i++) {
-        formato += "<tr>\
-        <td>Ejercicio " + i + "</td>";
-
-        // Agregar celdas para cada día
-        for (var j = 0; j < parseInt(dias_semana); j++) {
-            formato += "<td>(Día " + (j + 1) + " Ejercicio " + i + ")</td>";
-        }
-
-        formato += "</tr>";
-    }
-
-    formato += "</tbody></table>";
-    return formato;
-}
-
-// Función para construir los headers de la petición API
-function construirHeaders() {
-    return {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + apiKey
-    };
-}
-
-// Función para construir el objeto de datos para la petición API
-function construirData(datosUsuario, formato) {
-    return {
-        model: 'gpt-3.5-turbo',
-        messages: [
-            { role: 'system', content: 'Eres un bot que responde en función a una serie de cualidades con una rutina idónea, siempre tus respuestas tienen el siguiente formato, ningún otro: ' + formato },
-            { role: 'user', content: 'Genera una rutina de entrenamiento para un usuario de sexo: ' + datosUsuario.sexo + ', nivel: ' + datosUsuario.nivel + ' altura: ' + datosUsuario.altura + ' cm, peso: ' + datosUsuario.peso + ' kg, peso deseado: ' + datosUsuario.peso_deseado + ' kg, entrenando ' + datosUsuario.dias_semana + ' días a la semana, en entorno de ' + datosUsuario.entorno + ' y con objetivo ' + datosUsuario.objetivo + '.  Incluye ejercicios para los principales grupos musculares (por ejemplo, pecho, espalda, piernas, etc.) y especifica el número de series y repeticiones para cada ejercicio.' },
-        ]
-    };
-}
-
-// Función asincrónica para realizar la petición a la API
-async function realizarPeticionApi(apiUrl, headers, data) {
-    return fetch(apiUrl, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json());
-}
-
-// Función para mostrar la rutina generada en un modal
-function mostrarRutinaEnModal(respuestaGenerada) {
-    var rutinaModalBody = document.getElementById('rutinaModalBody');
-    rutinaModalBody.innerHTML = respuestaGenerada;
-
-    $('#rutinaModal').modal('show');
-}
-
-// Función para guardar la rutina en el servidor
 function guardarRutina() {
-    var datosUsuario = obtenerDatosUsuario();
+    var nivel = document.getElementById("nivel").value;
+    var altura = document.getElementById("altura").value;
+    var peso = document.getElementById("peso").value;
+    var peso_deseado = document.getElementById("peso_deseado").value;
+    var dias_semana = document.getElementById("dias_semana").value;
+    var entorno = document.getElementById("entorno").value;
+    var objetivo = document.getElementById("objetivo").value;
+
+    // Obtén la rutina del modal
+    var rutina = document.getElementById('rutinaModalBody').textContent;
     var tituloRutinaInput = document.getElementById('tituloRutina');
     var tituloRutina = tituloRutinaInput.value;
 
-    if (validarTituloRutina(tituloRutina)) {
-        var data = construirDatosEnvioServer(datosUsuario, tituloRutina);
-
-        enviarRutinaAlServidor(data);
-    }
-}
-
-// Función para validar el título de la rutina
-function validarTituloRutina(tituloRutina) {
-    var tituloRutinaInput = document.getElementById('tituloRutina');
+    // Verifica si el título está vacío
     if (tituloRutina.trim() === "") {
+        // Muestra el mensaje de error y resalta el borde del input
         document.getElementById('errorTitulo').textContent = 'Por favor, ingresa un título para la rutina.';
         tituloRutinaInput.style.borderColor = 'red';
-        return false;
+        return;
     } else {
+        // Limpia el mensaje de error y restablece el borde del input
         document.getElementById('errorTitulo').textContent = '';
-        tituloRutinaInput.style.borderColor = '';
-        return true;
+        tituloRutinaInput.style.borderColor = ''; // Dejar que el navegador maneje el estilo del borde
     }
-}
 
-// Función para construir el objeto de datos a enviar al servidor
-function construirDatosEnvioServer(datosUsuario, tituloRutina) {
-    return {
-        nivel: datosUsuario.nivel,
-        altura: datosUsuario.altura,
-        peso: datosUsuario.peso,
-        peso_deseado: datosUsuario.peso_deseado,
-        dias_semana: datosUsuario.dias_semana,
-        sexo: datosUsuario.sexo,
-        entorno: datosUsuario.entorno,
-        objetivo: datosUsuario.objetivo,
+    // Construye un objeto con los datos a enviar
+    var data = {
+        nivel: nivel,
+        altura: altura,
+        peso: peso,
+        peso_deseado: peso_deseado,
+        dias_semana: dias_semana,
+        entorno: entorno,
+        objetivo: objetivo,
         titulo: tituloRutina,
-        rutina: document.getElementById('rutinaModalBody').innerHTML
+        rutina: rutina
     };
-}
 
-// Función para enviar la rutina al servidor
-function enviarRutinaAlServidor(data) {
+    // Envía la rutina y los datos al servidor PHP para su inserción
     fetch('../back/guardar_rutina.php', {
         method: 'POST',
         headers: {
@@ -184,42 +120,27 @@ function enviarRutinaAlServidor(data) {
         .then(response => response.json())
         .then(data => {
             console.log('Rutina guardada:', data);
-            mostrarMensajeExito(data.titulo);
-            limpiarCampos();
+
+            // Muestra un mensaje de éxito con SweetAlert
+            Swal.fire({
+                icon: 'success',
+                title: 'Rutina guardada con éxito',
+                text: 'Título: ' + data.titulo,
+            });
+
+            // Cierra el modal después de guardar
             $('#rutinaModal').modal('hide');
         })
         .catch(error => {
             console.error('Error:', error);
-            mostrarMensajeError();
+            // Muestra un mensaje de error con SweetAlert si hay un problema
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al guardar la rutina. Por favor, inténtalo de nuevo.',
+            });
         });
-}
 
-// Función para mostrar un mensaje de éxito usando la librería Swal
-function mostrarMensajeExito(titulo) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Rutina guardada con éxito',
-        text: 'Título: ' + titulo,
-    });
-}
-
-// Función para mostrar un mensaje de error usando la librería Swal
-function mostrarMensajeError() {
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Hubo un problema al guardar la rutina. Por favor, inténtalo de nuevo.',
-    });
-}
-
-// Función para limpiar los campos del formulario
-function limpiarCampos() {
-    var elementos = ['nivel', 'altura', 'peso', 'peso_deseado', 'edad', 'sexo', 'objetivo', 'requisitos'];
-
-    elementos.forEach(function (elementoId) {
-        var elemento = document.getElementById(elementoId);
-        if (elemento) {
-            elemento.value = '';
-        }
-    });
+    // Cierra el modal después de guardar
+    $('#rutinaModal').modal('hide');
 }

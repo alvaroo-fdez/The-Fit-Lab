@@ -1,5 +1,7 @@
 <?php require_once('nav.php') ?>
 
+
+<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
@@ -22,77 +24,10 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid py-2">
-                <h5>Biceps</h5>
-                <hr>
-                <div class="card-deck-scrollable flex-nowrap overflow-auto d-flex flex-row">
-                    <div class="card mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/curl_biceps_martillo.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Curl de biceps martillo</h5>
-                            <p class="card-text">Ejercicio con mancuernas que trabaja el antebrazo y el bíceps en agarre neutro</p>
-                        </div>
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-primary" onclick="init('CurlMartillo')">Probar contador</button>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/curl_biceps_barra_z.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Curl de bíceps con barra Z</h5>
-                            <p class="card-text">Ejercicio con barra que trabaja el bíceps y el antebrazo en agarre semi-pronado</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/dominadas_supinas.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Dominadas supinas</h5>
-                            <p class="card-text">Ejercicio de peso corporal que trabaja el bíceps y la espalda en agarre supino</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/curl_biceps_martillo.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Curl de biceps martillo</h5>
-                            <p class="card-text">Ejercicio con mancuernas que trabaja el antebrazo y el bíceps en agarre neutro</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/curl_biceps_barra_z.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Curl de bíceps con barra Z</h5>
-                            <p class="card-text">Ejercicio con barra que trabaja el bíceps y el antebrazo en agarre semi-pronado</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/dominadas_supinas.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Dominadas supinas</h5>
-                            <p class="card-text">Ejercicio de peso corporal que trabaja el bíceps y la espalda en agarre supino</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/curl_biceps_martillo.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Curl de biceps martillo</h5>
-                            <p class="card-text">Ejercicio con mancuernas que trabaja el antebrazo y el bíceps en agarre neutro</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/curl_biceps_barra_z.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Curl de bíceps con barra Z</h5>
-                            <p class="card-text">Ejercicio con barra que trabaja el bíceps y el antebrazo en agarre semi-pronado</p>
-                        </div>
-                    </div>
-                    <div class="card  mx-2">
-                        <img class="img-fluid card-img-top" src="../assets/images/exercises/dominadas_supinas.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Dominadas supinas</h5>
-                            <p class="card-text">Ejercicio de peso corporal que trabaja el bíceps y la espalda en agarre supino</p>
-                        </div>
-                    </div>
-                </div>
+
+            <!-- Content Section -->
+
+            <div class="container-fluid py-2" id="contenedor">
             </div>
         </div>
     </div>
@@ -110,6 +45,11 @@
                 </button>
             </div>
             <div class="modal-body" id="modal-body-content">
+                <div class="d-flex align-items-center justify-content-center" id="contenedor-loader" style="height: 50vh;">
+                    <div class="spinner-border text-success" id="loader" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
                 <canvas id="canvas" width="200" height="200"></canvas>
                 <div id="resultado"></div>
             </div>
@@ -120,5 +60,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script src="..\Biblioteca IA\ejercicios.js"></script>
+<script src="..\js\ejercicios.js"></script>
+<script src="..\js\procesamiento_ejercicios.js"></script>
 
 <?php require_once('footer.php') ?>

@@ -1,4 +1,3 @@
-// Archivo para validar todos los campos del formulario de registro y login
 $(document).ready(function () {
     let cambioregistro = $("#signUp");
     let cambiologin = $("#signIn");
@@ -140,7 +139,7 @@ $(document).ready(function () {
     $("input").on('blur', function () {
         let valor = $(this).val();
 
-        if (valor.length == 0) {
+        if(valor.length == 0){
             $("#" + $(this).attr('id') + "-error").text("");
         }
     });

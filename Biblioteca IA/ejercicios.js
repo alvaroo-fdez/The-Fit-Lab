@@ -2,15 +2,16 @@ var modal = document.getElementById('miModal');
 var modalTitle = document.getElementById('ModalLabel');
 var modalBody = document.querySelector('.modal-body');
 var canvas = document.getElementById("canvas");
+var loader = document.getElementById("contenedor-loader");
 
 let model, webcam, ctx, labelContainer, maxPredictions;
 
 async function init(contenido) {
 
     $('#miModal').modal('show');
+    $("#loader").show();
     modalTitle.innerHTML = contenido;
 
-    // Cargar el modelo al cargar la página
     var URL = "../modelos/" + contenido + "/";
 
     var modelURL = URL + "model.json";
@@ -21,9 +22,14 @@ async function init(contenido) {
 
     var size = $('#modal-body-content').width();
     var flip = false;
+
     webcam = new tmPose.Webcam(size, size, flip);
     await webcam.setup();
     await webcam.play();
+
+    loader.style.height = '0px';
+    $("#loader").hide();
+
     window.requestAnimationFrame(loop);
 
     canvas.width = size; canvas.height = size;
@@ -40,13 +46,9 @@ async function loop(timestamp) {
     window.requestAnimationFrame(loop);
 }
 
-const classNames = ["Err", "0%", "50%", "100%"];
-
 async function predict() {
     const { pose, posenetOutput } = await model.estimatePose(webcam.canvas, false);
     const prediction = await model.predict(posenetOutput);
-
-
 
     // Encuentra la clase con la probabilidad más alta
     let maxProbability = -1;
@@ -63,9 +65,13 @@ async function predict() {
         }
     }
 
-    console.log(prediction);
     // Actualiza la interfaz gráfica mostrando solo la clase con la probabilidad más alta
-    labelContainer.innerHTML = `${classNameWithMaxProbability}: ${Math.round(maxProbability * 100)}% (Más alta)`;
+    try {
+        labelContainer.innerHTML = `${classNameWithMaxProbability.match(/_(\d+)$/)[1]}%: Fiabilidad ${Math.round(maxProbability * 100)}%`; 
+    }
+    catch{
+        labelContainer.innerHTML = `Sin detecciones`;
+    }
     drawPose(pose)
 }
 
@@ -76,7 +82,7 @@ function drawPose(pose) {
         // draw the keypoints and skeleton
         if (pose) {
             var minPartConfidence = 0.5;
-            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx, 4, '#7ED956', '#7ED956');
+            // tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx, 4, '#7ED956', '#7ED956');
             tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx, 4, '#7ED956');
         }
     }
@@ -85,8 +91,9 @@ function drawPose(pose) {
 function cerrarModal() {
     // Detener la transmisión de la cámara al cerrar el modal
     if (stream) {
-        var tracks = stream.getTracks();
+        const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
+        webcam.stop()
     }
     // Ocultar el modal utilizando jQuery
     $('#miModal').modal('hide');
@@ -97,4 +104,4 @@ window.onclick = function (event) {
     if (event.target == modal) {
         cerrarModal();
     }
-}
+};
