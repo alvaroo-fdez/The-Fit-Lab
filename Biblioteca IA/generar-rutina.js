@@ -1,20 +1,27 @@
+// Función principal que se ejecuta al intentar generar una rutina
 function generarRutina(event) {
     event.preventDefault();
 
+    // Se obtiene la API key antes de realizar la petición
     obtenerApiKey()
         .then(() => {
             deshabilitarBotonGenerarRutina();
 
+            // Se obtienen los datos del usuario
             var datosUsuario = obtenerDatosUsuario();
+            // Se construye un formato HTML para mostrar la rutina
             var formato = construirFormatoHTML(datosUsuario.dias_semana);
 
             var apiUrl = 'https://api.openai.com/v1/chat/completions';
             var headers = construirHeaders();
             var data = construirData(datosUsuario, formato);
 
+            // Se realiza la petición a la API de OpenAI
             realizarPeticionApi(apiUrl, headers, data)
                 .then(result => {
+                    // Se extrae la respuesta generada por la API
                     var respuestaGenerada = result.choices[0].message.content;
+                    // Se muestra la rutina en un modal
                     mostrarRutinaEnModal(respuestaGenerada);
 
                     habilitarBotonGenerarRutina();
@@ -26,18 +33,21 @@ function generarRutina(event) {
         });
 }
 
+// Función para deshabilitar el botón de generar rutina
 function deshabilitarBotonGenerarRutina() {
     var btnGenerarRutina = document.getElementById('btnGenerarRutina');
     btnGenerarRutina.disabled = true;
     btnGenerarRutina.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
 }
 
+// Función para habilitar el botón de generar rutina
 function habilitarBotonGenerarRutina() {
     var btnGenerarRutina = document.getElementById('btnGenerarRutina');
     btnGenerarRutina.disabled = false;
     btnGenerarRutina.innerHTML = 'Generar Rutina';
 }
 
+// Función para obtener los datos del usuario desde el formulario
 function obtenerDatosUsuario() {
     return {
         nivel: document.getElementById("nivel").value,
@@ -51,6 +61,7 @@ function obtenerDatosUsuario() {
     };
 }
 
+// Función para construir el formato HTML de la tabla de la rutina
 function construirFormatoHTML(dias_semana) {
     let formato = "<table>\
         <tbody>\
@@ -81,6 +92,7 @@ function construirFormatoHTML(dias_semana) {
     return formato;
 }
 
+// Función para construir los headers de la petición API
 function construirHeaders() {
     return {
         'Content-Type': 'application/json',
@@ -88,6 +100,7 @@ function construirHeaders() {
     };
 }
 
+// Función para construir el objeto de datos para la petición API
 function construirData(datosUsuario, formato) {
     return {
         model: 'gpt-3.5-turbo',
@@ -98,6 +111,7 @@ function construirData(datosUsuario, formato) {
     };
 }
 
+// Función asincrónica para realizar la petición a la API
 async function realizarPeticionApi(apiUrl, headers, data) {
     return fetch(apiUrl, {
         method: 'POST',
@@ -107,6 +121,7 @@ async function realizarPeticionApi(apiUrl, headers, data) {
         .then(response => response.json());
 }
 
+// Función para mostrar la rutina generada en un modal
 function mostrarRutinaEnModal(respuestaGenerada) {
     var rutinaModalBody = document.getElementById('rutinaModalBody');
     rutinaModalBody.innerHTML = respuestaGenerada;
@@ -114,6 +129,7 @@ function mostrarRutinaEnModal(respuestaGenerada) {
     $('#rutinaModal').modal('show');
 }
 
+// Función para guardar la rutina en el servidor
 function guardarRutina() {
     var datosUsuario = obtenerDatosUsuario();
     var tituloRutinaInput = document.getElementById('tituloRutina');
@@ -126,6 +142,7 @@ function guardarRutina() {
     }
 }
 
+// Función para validar el título de la rutina
 function validarTituloRutina(tituloRutina) {
     var tituloRutinaInput = document.getElementById('tituloRutina');
     if (tituloRutina.trim() === "") {
@@ -139,6 +156,7 @@ function validarTituloRutina(tituloRutina) {
     }
 }
 
+// Función para construir el objeto de datos a enviar al servidor
 function construirDatosEnvioServer(datosUsuario, tituloRutina) {
     return {
         nivel: datosUsuario.nivel,
@@ -154,6 +172,7 @@ function construirDatosEnvioServer(datosUsuario, tituloRutina) {
     };
 }
 
+// Función para enviar la rutina al servidor
 function enviarRutinaAlServidor(data) {
     fetch('../back/guardar_rutina.php', {
         method: 'POST',
@@ -175,6 +194,7 @@ function enviarRutinaAlServidor(data) {
         });
 }
 
+// Función para mostrar un mensaje de éxito usando la librería Swal
 function mostrarMensajeExito(titulo) {
     Swal.fire({
         icon: 'success',
@@ -183,6 +203,7 @@ function mostrarMensajeExito(titulo) {
     });
 }
 
+// Función para mostrar un mensaje de error usando la librería Swal
 function mostrarMensajeError() {
     Swal.fire({
         icon: 'error',

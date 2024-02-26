@@ -27,7 +27,7 @@
 ## Descripción del proyecto
 
 <p align="justify">
-**The FitLab** es un proyecto en desarrollo que utiliza inteligencia artificial para generar dietas y rutinas personalizadas. Además, cuenta con un chatbot que actúa como entrenador personal virtual y un módulo de detección de movimientos que permite a los usuarios realizar entrenamientos personalizados.
+The FitLab es un proyecto en desarrollo que utiliza inteligencia artificial para generar dietas y rutinas personalizadas. Además, cuenta con un chatbot que actúa como entrenador personal virtual y un módulo de detección de movimientos que permite a los usuarios realizar entrenamientos personalizados.
 
 El sistema se centra en proporcionar a los usuarios una experiencia integral de desarrollo de la salud y el bienestar, combinando tecnologías avanzadas para mejorar la calidad de vida y generar buenos hábitos. La generación de dietas y rutinas adaptadas, junto con la interacción a través del chatbot y la facilidad para realizar entrenamientos personalizados mediante detección de movimientos, hacen de The FitLab una solución completa para el cuidado personal.
 
@@ -135,6 +135,13 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
     `objetivo` varchar(50) DEFAULT NULL,
     `rutina` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL
   );
+
+- Configura la conexión a la base de datos en función de tus requisitos
+    ```plaintext
+    private $dsn = "mysql:host=nombre_del_servidor_remoto;dbname=nombre_de_tu_base_de_datos";
+    private $user = "<tu_usuario>";
+    private $pass = "<tu_contraseña>";
+
 
 - Abrir el proyecto desde el directorio raiz, te llevará al index para registrar un nuevo usuario.
 

@@ -1,7 +1,5 @@
 <?php require_once('nav.php') ?>
 
-
-<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
@@ -24,9 +22,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Content Section -->
-
             <div class="container-fluid py-2">
                 <h5>Biceps</h5>
                 <hr>
@@ -97,7 +92,6 @@
                             <p class="card-text">Ejercicio de peso corporal que trabaja el bíceps y la espalda en agarre supino</p>
                         </div>
                     </div>
-                    <!-- Agrega más tarjetas según sea necesario -->
                 </div>
             </div>
         </div>

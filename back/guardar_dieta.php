@@ -3,17 +3,11 @@ require_once 'Conexion.php';
 // Recibimos los datos enviados por la solicitud AJAX
 $data = json_decode(file_get_contents("php://input"));
 
-// Configuración de la conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "the fit lab";
-
 try {
-    // Creamos una nueva conexión
+    // Instancia de una nueva conexión
     $conn = new Conexion();
     
-    // Establecemos el modo de error PDO a excepción
+    // Establecemos el modo de error PDO
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Prepararamos la consulta SQL para la inserción de la dieta

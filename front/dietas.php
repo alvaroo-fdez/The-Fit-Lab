@@ -2,13 +2,13 @@
 require_once('nav.php');
 require_once('../back/Conexion.php');
 
-// Obtener el usuario_id desde la cookie
+// Obtenemos el usuario_id desde la cookie
 $usuario_id = $_COOKIE['id'];
 
-// Crear una instancia de la clase Conexion
+// Creamos una instancia de la clase Conexion
 $conexion = new Conexion();
 
-// Realizar la consulta para obtener las dietas del usuario actual
+// Realizamos la consulta para obtener las dietas del usuario actual
 $query = "SELECT * FROM dietas WHERE usuario_id = :usuario_id ORDER BY id DESC";
 $stmt = $conexion->prepare($query);
 $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
@@ -18,13 +18,9 @@ $stmt->execute();
 $dietas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
-            <!-- Resto de tu código ... -->
-
-            <!-- Content Section -->
             <div class="row">
                 <div class="col-md-12">
                     <!-- Listado de dietas en tarjetas -->
@@ -33,7 +29,7 @@ $dietas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <h5>Dietas Guardadas</h5>
                         </div>
                         <div class="card-body">
-                            <!-- Iterar sobre los resultados de la consulta -->
+                            <!-- Resultados de la consulta -->
                             <?php foreach ($dietas as $dieta) { ?>
                             <div class="card col-md-12 mb-3" id="dietaCard<?php echo $dieta['id']; ?>">
                                 <div class="card-body">

@@ -3,12 +3,6 @@ require_once 'Conexion.php';
 // Recibe los datos enviados por la solicitud AJAX
 $data = json_decode(file_get_contents("php://input"));
 
-// Configuración de la conexión a la base de datos 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "the fit lab";
-
 try {
     // Creamos una nueva conexión PDO
     $conn = new Conexion();

@@ -1,16 +1,23 @@
+// Función principal para generar la dieta
 function generarDieta(event) {
+    // Evitamos la recarga de la página al enviar el formulario
     event.preventDefault();
 
-    obtenerApiKey().then(() => {
-        deshabilitarBotonGenerarDieta();
+    // Obtenemos la API key antes de realizar la petición
+    obtenerApiKey().then(() => { 
+        // Deshabilitamos el botón mientras se genera la dieta
+        deshabilitarBotonGenerarDieta(); 
 
+        // Obtener los datos del usuario y el formato de la dieta
         var datosUsuario = obtenerDatosUsuario();
         var formato = construirFormatoDieta();
 
+        // Definimos la URL de la API de OpenAI y construir los headers y datos necesarios
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = construirHeaders();
         var data = construirDataDieta(datosUsuario, formato);
 
+        // Realizamos la petición a la API de OpenAI
         realizarPeticionApi(apiUrl, headers, data)
             .then(result => {
                 var respuestaGenerada = result.choices[0].message.content;
@@ -24,12 +31,14 @@ function generarDieta(event) {
     });
 }
 
+// Función para deshabilitar el botón de generar dieta
 function deshabilitarBotonGenerarDieta() {
     var btnGenerarDieta = document.getElementById('btnGenerarDieta');
     btnGenerarDieta.disabled = true;
     btnGenerarDieta.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
 }
 
+// Función para habilitar el botón de generar dieta
 function habilitarBotonGenerarDieta() {
     var btnGenerarDieta = document.getElementById('btnGenerarDieta');
     btnGenerarDieta.disabled = false;
@@ -93,6 +102,7 @@ function construirFormatoDieta() {
     return formatoDieta;
 }
 
+// Función para construir los headers de la petición a la API
 function construirHeaders() {
     return {
         'Content-Type': 'application/json',
@@ -100,6 +110,7 @@ function construirHeaders() {
     };
 }
 
+// Función para construir los datos de la dieta a enviar a la API
 function construirDataDieta(datosUsuario, formato) {
     return {
         model: 'gpt-3.5-turbo',
@@ -110,6 +121,7 @@ function construirDataDieta(datosUsuario, formato) {
     };
 }
 
+// Función asincrónica para realizar la petición a la API
 async function realizarPeticionApi(apiUrl, headers, data) {
     return fetch(apiUrl, {
         method: 'POST',
@@ -119,6 +131,7 @@ async function realizarPeticionApi(apiUrl, headers, data) {
         .then(response => response.json());
 }
 
+// Función para mostrar la dieta generada en el modal
 function mostrarDietaEnModal(respuestaGenerada) {
     var rutinaModalBody = document.getElementById('rutinaModalBody');
     rutinaModalBody.innerHTML = respuestaGenerada;
@@ -153,6 +166,7 @@ function guardarDieta() {
     }
 }
 
+// Función para detener el envío del formulario al guardar una rutina si el titulo no es válido
 function validarTituloRutina(tituloRutina) {
     var tituloRutinaInput = document.getElementById('tituloRutina');
     if (tituloRutina.trim() === "") {
@@ -166,6 +180,7 @@ function validarTituloRutina(tituloRutina) {
     }
 }
 
+// Función para enviar los datos necesarios al servidor
 function construirDatosEnvioServerDieta(datosUsuario, tituloRutina, contenidoTabla) {
     return {
         nivel: datosUsuario.nivel,
@@ -181,6 +196,7 @@ function construirDatosEnvioServerDieta(datosUsuario, tituloRutina, contenidoTab
     };
 }
 
+// Función para enviar los datos al script de guardar dieta
 function enviarDietaAlServidor(data) {
     fetch('../back/guardar_dieta.php', {
         method: 'POST',
@@ -202,6 +218,7 @@ function enviarDietaAlServidor(data) {
         });
 }
 
+// Función para mostrar un mensaje satisfactorio con sweetalert
 function mostrarMensajeExito() {
     Swal.fire({
         icon: 'success',
@@ -212,6 +229,7 @@ function mostrarMensajeExito() {
     tituloRutinaInput.value = '';
 }
 
+// Función para mostrar un mensaje de error con sweetalert
 function mostrarMensajeError() {
     Swal.fire({
         icon: 'error',

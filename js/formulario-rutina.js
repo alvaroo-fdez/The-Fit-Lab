@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Asignar un evento al formulario cuando se envía
+    // Asignamos un evento al formulario cuando se envía
     document.querySelector('#rutinaForm').addEventListener('submit', function (event) {
         event.preventDefault();
-        // Validar cada campo antes de enviar el formulario
+        // Validamos cada campo antes de enviar el formulario
         var nivel = document.getElementById('nivel').value;
         var altura = document.getElementById('altura').value;
         var peso = document.getElementById('peso').value;
@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
         var objetivo = document.getElementById('objetivo').value;
         var formIsValid = true;
 
-        // Resetear estilos de los campos
+        // Reseteamos estilos de los campos
         resetFormStyles();
 
-        // Validar cada campo
+        // Validamos cada campo
         if (!nivel) {
             setError('nivel', 'Por favor, selecciona un nivel.');
             formIsValid = false;
@@ -40,11 +40,12 @@ document.addEventListener("DOMContentLoaded", function () {
             formIsValid = false;
         }
 
-        // Detener el envío del formulario si hay campos vacíos
+        // Detenemos el envío del formulario si hay campos vacíos
         if (!formIsValid) {
             event.preventDefault();
         } else {
-            generarRutina(event); // Pasa el evento a la función generarRutina
+            // Pasa el evento a la función generarRutina
+            generarRutina(event); 
         }
     });
 });
@@ -75,6 +76,7 @@ function resetFormStyles() {
     });
 }
 
+// Función para actualizar los días de la semana automáticamente
 function actualizarDiasSemana(valor) {
     document.getElementById('dias-semana-valor').innerText = valor;
 }

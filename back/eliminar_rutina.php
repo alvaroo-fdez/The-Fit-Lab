@@ -2,7 +2,7 @@
 require_once('../back/Conexion.php');
 $data = json_decode(file_get_contents("php://input"));
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtener el ID de la rutina desde la solicitud
+    // Obtenemos el ID de la rutina desde la solicitud
     $rutinaId = $_POST['rutinaId'];
 
     // Crear una instancia de la clase Conexion
@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conexion->prepare($query);
     $stmt->bindParam(':rutinaId', $rutinaId, PDO::PARAM_INT);
     
+    // Mandamos la respuesta de la base de datos en formato json para manejarlo con js
     if ($stmt->execute()) {
         echo json_encode(['mensaje' => 'Rutina eliminada con éxito']);
     } else {

@@ -1,6 +1,7 @@
 <?php
 require_once 'Usuario.php';
 
+// Registramos un nuevo usuario y devolvemos si ha sido exitoso o no el registro
 if(isset($_POST['btregistro'])){
     $nombre = htmlspecialchars($_POST['nombreregistro']);
     $email = htmlspecialchars($_POST['emailregistro']);

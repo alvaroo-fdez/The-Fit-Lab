@@ -1,6 +1,5 @@
 <?php require_once('nav.php') ?>
 
-<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
@@ -23,8 +22,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Content Section -->
             <div class="row">
                 <div class="col-md-12">
                     <!-- Listado de rutinas en tarjetas -->

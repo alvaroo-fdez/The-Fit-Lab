@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <?php
+// Si no existe alguna de las cookies en el navegador es que no hay una sesión iniciada
+// por lo que redireccionamos al index
  session_start();
  if(!isset($_COOKIE['id']) || !isset($_COOKIE['nombre']) || !isset($_COOKIE['correo'])){
     header("Location: ../index.php");
