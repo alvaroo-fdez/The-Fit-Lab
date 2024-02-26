@@ -274,8 +274,8 @@ button:hover{
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: 9999; 
+    background-color: rgba(0, 0, 0, 0.5); /* Aquí puedes ajustar el color y la opacidad de la capa de superposición */
+    z-index: 9999; /* Asegúrate de que la capa de superposición tenga un índice de apilamiento alto para que se muestre por encima del formulario */
     display: none;
   }
   

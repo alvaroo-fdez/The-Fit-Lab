@@ -1,5 +1,6 @@
 <?php require_once('nav.php') ?>
 
+<!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
@@ -22,6 +23,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Content Section -->
             <div class="row">
                 <div class="col-md-12">
                     <!-- Listado de dietas en tarjetas -->
@@ -90,7 +93,7 @@
 <!-- Modal -->
 <div class="modal fade" id="rutinaModal" tabindex="-1" role="dialog" aria-labelledby="rutinaModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document" id="modelo-editar-dialogo">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rutinaModalLabel">Dieta Generada</h5>
@@ -108,7 +111,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarDieta()" id="btnGuardarDieta">Guardar Dieta</button>
+                <button type="button" class="btn btn-primary" onclick="guardarDieta()">Guardar Dieta</button>
             </div>
         </div>
     </div>
