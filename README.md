@@ -142,7 +142,6 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
     private $user = "<tu_usuario>";
     private $pass = "<tu_contraseña>";
 
-
 - Abrir el proyecto desde el directorio raiz, te llevará al index para registrar un nuevo usuario.
 
 ## Desarrolladores

@@ -1,5 +1,5 @@
 function sendMessage() {
-    // Obtén el mensaje del usuario desde el input
+    // Obtenemos el mensaje del usuario desde el input
     var userMessageInput = document.getElementById('user-message-input');
     var userMessage = userMessageInput.value;
 
@@ -8,23 +8,34 @@ function sendMessage() {
         appendMessage('send-chat', userMessage);
 
         // Llama a la función para generar la respuesta usando la API de OpenAI
-        generateGptResponse(userMessage);
+        generarRespuestaChatgpt(userMessage);
 
         // Vacía el input después de enviar el mensaje
         userMessageInput.value = "";
     }
 }
 
+// Función para formatear el texto de respuesta
+function formatearRespuesta(response) {
+    // Reemplazar los saltos de línea específicos de OpenAI con etiquetas <br>
+    response = response.replace(/\n/g, '<br>');
+    return response;
+}
+
 function appendMessage(className, message) {
     // Crea un nuevo elemento de mensaje
     var messageElement = document.createElement('div');
     messageElement.className = 'row m-b-20 ' + className;
+
+    // Formatea el mensaje antes de insertarlo
+    var formattedMessage = formatearRespuesta(message);
+
     messageElement.innerHTML = `
         <div class="col">
             <div class="msg">
-                <p class="m-b-0">${message}</p>
+                <p class="m-b-0">${formattedMessage}</p>
             </div>
-            <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>${getCurrentTime()}</p>
+            <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>${horaActual()}</p>
         </div>
     `;
 
@@ -32,8 +43,11 @@ function appendMessage(className, message) {
     document.getElementById('chat-container').appendChild(messageElement);
 }
 
-function generateGptResponse(userMessage) {
+function generarRespuestaChatgpt(userMessage) {
     obtenerApiKey().then(() => {
+        // Mostrar el indicador de carga dentro del área del chat
+        document.getElementById('loading-indicator').style.display = 'block';
+
         // Lógica para llamar a la API de OpenAI y manejar la respuesta
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
@@ -60,11 +74,15 @@ function generateGptResponse(userMessage) {
                 // Añade la respuesta del asistente al contenedor de chat
                 appendMessage('received-chat', assistantResponse);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                // Ocultar el indicador de carga dentro del área del chat después de completar la solicitud
+                document.getElementById('loading-indicator').style.display = 'none';
+            });
     });
 }
 
-function getCurrentTime() {
+function horaActual() {
     // Obtiene la hora actual en el formato hh:mm
     var now = new Date();
     var hours = now.getHours().toString().padStart(2, '0');
