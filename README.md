@@ -111,19 +111,21 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
     `sexo` varchar(1) NOT NULL,
     `objetivo` varchar(255) NOT NULL,
     `requisitos` text DEFAULT NULL,
-    `dieta` longtext NOT NULL
+    `dieta` longtext NOT NULL,
+    PRIMARY KEY (`id`)
   );
-  
+
   CREATE TABLE `usuarios` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nombre` varchar(255) NOT NULL,
     `correo` varchar(255) NOT NULL,
-    `contraseña` varchar(255) NOT NULL
+    `contraseña` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`)
   );
-  
+
   CREATE TABLE `rutinas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `usuario_id` int(11) DEFAULT NULL ,
+    `usuario_id` int(11) DEFAULT NULL,
     `titulo` varchar(255) DEFAULT NULL,
     `nivel` varchar(50) DEFAULT NULL,
     `altura` int(11) DEFAULT NULL,
@@ -133,7 +135,8 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
     `sexo` varchar(50) DEFAULT NULL,
     `entorno_entrenamiento` varchar(50) DEFAULT NULL,
     `objetivo` varchar(50) DEFAULT NULL,
-    `rutina` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL
+    `rutina` longtext CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+    PRIMARY KEY (`id`)
   );
 
 - Configura la conexión a la base de datos en función de tus requisitos
@@ -141,7 +144,6 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
     private $dsn = "mysql:host=nombre_del_servidor_remoto;dbname=nombre_de_tu_base_de_datos";
     private $user = "<tu_usuario>";
     private $pass = "<tu_contraseña>";
-
 
 - Abrir el proyecto desde el directorio raiz, te llevará al index para registrar un nuevo usuario.
 
