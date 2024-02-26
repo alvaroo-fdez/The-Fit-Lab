@@ -1,5 +1,5 @@
 function sendMessage() {
-    // Obtenemos el mensaje del usuario desde el input
+    // Obtén el mensaje del usuario desde el input
     var userMessageInput = document.getElementById('user-message-input');
     var userMessage = userMessageInput.value;
 
@@ -8,7 +8,7 @@ function sendMessage() {
         appendMessage('send-chat', userMessage);
 
         // Llama a la función para generar la respuesta usando la API de OpenAI
-        generarRespuestaChatgpt(userMessage);
+        generateGptResponse(userMessage);
 
         // Vacía el input después de enviar el mensaje
         userMessageInput.value = "";
@@ -16,7 +16,7 @@ function sendMessage() {
 }
 
 // Función para formatear el texto de respuesta
-function formatearRespuesta(response) {
+function formatResponseText(response) {
     // Reemplazar los saltos de línea específicos de OpenAI con etiquetas <br>
     response = response.replace(/\n/g, '<br>');
     return response;
@@ -28,14 +28,14 @@ function appendMessage(className, message) {
     messageElement.className = 'row m-b-20 ' + className;
 
     // Formatea el mensaje antes de insertarlo
-    var formattedMessage = formatearRespuesta(message);
+    var formattedMessage = formatResponseText(message);
 
     messageElement.innerHTML = `
         <div class="col">
             <div class="msg">
                 <p class="m-b-0">${formattedMessage}</p>
             </div>
-            <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>${horaActual()}</p>
+            <p class="text-muted m-b-0"><i class="fa fa-clock-o m-r-10"></i>${getCurrentTime()}</p>
         </div>
     `;
 
@@ -43,11 +43,11 @@ function appendMessage(className, message) {
     document.getElementById('chat-container').appendChild(messageElement);
 }
 
-function generarRespuestaChatgpt(userMessage) {
-    obtenerApiKey().then(() => {
-        // Mostrar el indicador de carga dentro del área del chat
-        document.getElementById('loading-indicator').style.display = 'block';
+function generateGptResponse(userMessage) {
+    // Mostrar el GIF de carga
+    document.getElementById('loading-gif').style.display = 'block';
 
+    obtenerApiKey().then(() => {
         // Lógica para llamar a la API de OpenAI y manejar la respuesta
         var apiUrl = 'https://api.openai.com/v1/chat/completions';
         var headers = {
@@ -58,7 +58,7 @@ function generarRespuestaChatgpt(userMessage) {
         var data = {
             model: 'gpt-3.5-turbo',
             messages: [
-                { role: 'system', content: 'Eres un entrenador personal llamado TheFitLab, con el propósito de ayudar a la gente para alcanzar sus resultados deportivos. Responderás a todo tipo de preguntas e incógnitas que tenga una persona, como la rutina que debe seguir en función de su peso y altura, lo que tiene que comer y buenos hábitos para ayudarle de todas las formas posibles. Enfócate en tratar a la persona como un entrenador personal.' },
+                { role: 'system', content: 'Eres un entrenador personal llamado TheFitLab, con el propósito de ayudar a la gente para alcanzar sus resultados deportivos. Responderás a todo tipo de preguntas e incógnitas que tenga una persona, como la rutina que debe seguir en función de su peso y altura, lo que tiene que comer y buenos hábitos para ayudarle de todas las formas posibles. Enfócate en tratar a la persona como un entrenador personal. Todos los saltos de línea que hagas reemplázalos por <br>' },
                 { role: 'user', content: userMessage }
             ]
         };
@@ -76,13 +76,14 @@ function generarRespuestaChatgpt(userMessage) {
             })
             .catch(error => console.error('Error:', error))
             .finally(() => {
-                // Ocultar el indicador de carga dentro del área del chat después de completar la solicitud
-                document.getElementById('loading-indicator').style.display = 'none';
+                // Ocultar el GIF de carga después de obtener la respuesta
+                document.getElementById('loading-gif').style.display = 'none';
             });
     });
 }
 
-function horaActual() {
+
+function getCurrentTime() {
     // Obtiene la hora actual en el formato hh:mm
     var now = new Date();
     var hours = now.getHours().toString().padStart(2, '0');
