@@ -1,14 +1,14 @@
 <?php
 require_once 'Conexion.php';
 
-// Obtener el correo electrónico enviado en la solicitud AJAX
+// Obtenemos el correo electrónico enviado en la solicitud
 $email = $_GET['email'];
 
 try {
   $conn = new Conexion();
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  // Comprobar si el correo electrónico ya está registrado
+  // Comprobamos si el correo electrónico ya está registrado
   $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo = :email");
   $stmt->bindParam(':email', $email);
   $stmt->execute();
@@ -24,11 +24,11 @@ try {
   }
 }
 catch(PDOException $e) {
-  // Si hay un error al conectar a la base de datos, devolver un mensaje de error como JSON
+  // Si hay un error al conectar a la base de datos devolvemos un mensaje de error como JSON
   $response = array('error' => 'Error al conectar a la base de datos');
   echo json_encode($response);
 }
 
-// Cerrar la conexión a la base de datos
+// Cierre de la conexion
 $conn = null;
 ?>

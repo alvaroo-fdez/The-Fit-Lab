@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-<?php session_start(); ?>
+<?php
+// Si no existe alguna de las cookies en el navegador es que no hay una sesión iniciada
+// por lo que redireccionamos al index
+ session_start();
+ if(!isset($_COOKIE['id']) || !isset($_COOKIE['nombre']) || !isset($_COOKIE['correo'])){
+    header("Location: ../index.php");
+ }
+ ?>
+
 <head>
     <title>The Fit Lab</title>
     <meta charset="utf-8">
@@ -9,23 +17,36 @@
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://alvaroo-fdez.github.io/daw23/css/style.css">
     <style>
-        .card-deck-scrollable {
-            @extend .card-deck;
-            flex-direction: row;
+    .card-deck-scrollable {
+        @extend .card-deck;
+        flex-direction: row;
 
-            &>.card {
-                @extend .mx-3;
-                flex: 0 0 40% !important;
-                /*Change to any size you want*/
-                max-width: 40%;
-            }
+        &>.card {
+            @extend .mx-3;
+            flex: 0 0 40% !important;
+            /*Change to any size you want*/
+            max-width: 40%;
         }
-        
-        video {
-            width: 100%;
-            height: auto;
-        }
+    }
+
+    video {
+        width: 100%;
+        height: auto;
+    }
+
+    ::selection {
+        background-color: #7ED956;
+        /* Color de fondo de la selección */
+        color: #fff;
+        /* Color del texto seleccionado */
+    }
+
+    ::-moz-selection {
+        background-color: #7ED956;
+        color: #fff;
+    }
     </style>
+    <link rel="stylesheet" href="../assets/css/modales.css">
 </head>
 
 <body class="">
@@ -49,14 +70,15 @@
                     </div>
                     <div class="collapse" id="nav-user-link">
                         <ul class="list-unstyled">
-                            <!-- <li class="list-group-item"><a href="user-profile.html"><i
-                                        class="feather icon-user m-r-5"></i>View Profile</a></li>
-                            <li class="list-group-item"><a href="#!"><i
-                                        class="feather icon-settings m-r-5"></i>Settings</a></li> -->
-                            <li class="list-group-item"><a href="auth-normal-sign-in.html"><i
-                                        class="feather icon-log-out m-r-5"></i>Logout</a></li>
+                            <li class="list-group-item">
+                                <!-- Enlace estilizado como botón para cerrar sesión -->
+                                <a href="#" id="logoutLink" onclick="cerrarSesion()">
+                                    <i class="feather icon-log-out m-r-5"></i>Cerrar sesión
+                                </a>
+                            </li>
                         </ul>
                     </div>
+
                 </div>
 
                 <ul class="nav pcoded-inner-navbar ">
@@ -73,12 +95,12 @@
                     </li>
                     <li class="nav-item">
                         <a href="rutinas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-file-text"></i></span><span class="pcoded-mtext">Mis
+                                    class="fas fa-list"></i></span><span class="pcoded-mtext">Mis
                                 rutinas</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="generar-rutinas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-align-justify"></i></span><span class="pcoded-mtext">Generar
+                                    class="fas fa-dumbbell"></i></span><span class="pcoded-mtext">Generar
                                 rutina</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
@@ -86,12 +108,12 @@
                     </li>
                     <li class="nav-item">
                         <a href="dietas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-pie-chart"></i></span><span class="pcoded-mtext">Mis
+                                    class="fas fa-list-ul"></i></span><span class="pcoded-mtext">Mis
                                 dietas</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="generar-dietas.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-map"></i></span><span class="pcoded-mtext">Generar
+                                    class="fas fa-utensils"></i></span><span class="pcoded-mtext">Generar
                                 dieta</span></a>
                     </li>
                     <li class="nav-item pcoded-menu-caption">
@@ -99,7 +121,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="ejercicios.php" class="nav-link "><span class="pcoded-micon"><i
-                                    class="feather icon-map"></i></span><span
+                                    class="fas fa-stopwatch"></i></span><span
                                 class="pcoded-mtext">Ejercitarse</span></a>
                     </li>
 
@@ -114,7 +136,8 @@
         <div class="m-header">
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <a href="#!" class="b-brand">
-                <img src="../assets/images/logo.png" alt="" class="logo"></a>
+                <img src="../assets/images/logo.png" alt="" class="logo">
+            </a>
             <a href="#!" class="mob-toggler">
                 <i class="feather icon-more-vertical"></i>
             </a>

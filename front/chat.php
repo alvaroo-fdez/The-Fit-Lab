@@ -18,7 +18,7 @@
                 <input type="text" name="task-insert" class="form-control" id="user-message-input"
                     placeholder="Pregunta lo que quieras..." onkeydown="presionarEnter(event)">
                 <div class="input-group-append">
-                    <button class="btn btn-primary" onclick="sendMessage()">
+                    <button class="btn btn-primary" onclick="enviaMensaje()">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                     <button class="btn btn-primary" id="boton-mic">
