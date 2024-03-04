@@ -14,8 +14,6 @@
 
 - [Características](#características)
 
-- [Aplicación](#aplicación)
-
 - [Herramientas utilizadas](#herramientas-utilizadas)
 
 - [Acceso al proyecto](#acceso-al-proyecto)
@@ -33,9 +31,6 @@ El sistema se centra en proporcionar a los usuarios una experiencia integral de 
 
 ¡Explora las posibilidades de The FitLab y lleva tu bienestar al siguiente nivel!
 
-![Descripción del proyecto The FitLab, que incluye inteligencia artificial para dietas y rutinas personalizadas, chatbot como entrenador personal y detección de movimientos para entrenamientos personalizados.](Enlace a imagen aquí)
-</p>
-
 ## Características
 
 :heavy_check_mark: **Funcionalidad 1:** Generación de dietas personalizadas utilizando inteligencia artificial.
@@ -48,15 +43,6 @@ El sistema se centra en proporcionar a los usuarios una experiencia integral de 
 
 Estas características hacen de nuestro proyecto una solución completa para el cuidado personal, proporcionando no solo planes de dieta y entrenamiento personalizados, sino también un compañero virtual para guiar y motivar a los usuarios a mejorar su calidad de vida.
 
-## Aplicación
-
-<div align="center">
-
-![Prueba en tiempo real](Incluir gifs o imagenes del proyecto)
-
-</div>
-
-###
 
 ## Herramientas utilizadas
 
@@ -149,5 +135,5 @@ Después de descargar el proyecto, puede ejecutarlo en un servidor local, funcio
 
 ## Desarrolladores
 
-| [<img src="https://avatars.githubusercontent.com/u/91118214?v=4" width=115><br><sub>Álvaro Fernández Fernández</sub>](https://github.com/alvaroo-fdez) |  [<img src="https://avatars.githubusercontent.com/u/122311216?v=4" width=115><br><sub>Moisés</sub>](https://github.com/Kymmon)  |
+| [<img src="https://avatars.githubusercontent.com/u/91118214?v=4" width=115><br><sub>Álvaro Fernández Fernández</sub>](https://github.com/alvaroo-fdez) |  [<img src="https://avatars.githubusercontent.com/u/122311216?v=4" width=115><br><sub>Moisés Molina Noguera</sub>](https://github.com/Kymmon)  |
 | :---: | :---: |
